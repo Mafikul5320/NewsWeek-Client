@@ -1,11 +1,12 @@
 import React from 'react';
 import { FaUser, FaBars, FaSearch } from "react-icons/fa";
+import { NavLink } from 'react-router';
 
 const Navber = () => {
     return (
-        <div className="w-full border-b border-gray-400">
+        <div className="w-full border-b border-gray-300">
             <div className='w-11/13 mx-auto'>
-                <div className="flex items-center justify-between  px-4 lg:px-10 py-2">
+                <div className="flex items-center justify-between   py-2">
                     {/* Left Section */}
                     <div className="flex items-center gap-4">
                         <button className="text-red-600 font-bold flex items-center gap-1">
@@ -18,7 +19,7 @@ const Navber = () => {
                     </div>
 
                     {/* Center Logo */}
-                    <div className="text-7xl font-serif font-bold text-[#F3910B] italic">
+                    <div className="text-7xl font-serif text-[#F3910B] italic">
                         NewsWeek<span className="text-xs align-top ml-1">PRO</span>
                     </div>
 
@@ -36,15 +37,13 @@ const Navber = () => {
 
                 {/* Navigation Links */}
                 <nav className="flex justify-center gap-6 py-2 text-sm font-semibold">
-                    <a href="#">Music</a>
-                    <a href="#">Celebrity</a>
-                    <a href="#">Politics</a>
-                    <a href="#">Finance</a>
-                    <a href="#">Travel</a>
-                    <a href="#">Food</a>
-                    <a href="#">Marketing</a>
-                    <a href="#">Tech</a>
-                    <a href="#">Make-up</a>
+                    <NavLink> All Publisher</NavLink>
+                    <NavLink> All Publisher</NavLink>
+                    <NavLink> All Publisher</NavLink>
+                    <NavLink> All Publisher</NavLink>
+                    <NavLink> All Publisher</NavLink>
+                    <NavLink>Plans</NavLink>
+                    <NavLink>About</NavLink>
                 </nav>
             </div>
         </div>

@@ -7,10 +7,11 @@ const MainLayout = () => {
     return (
         <div>
             <Navber></Navber>
-            <div className='w-11/13 mx-auto'>
+            <div className='w-11/13 mx-auto min-h-[calc(100vh-562px)]'>
                 <Outlet></Outlet>
-                <Footer></Footer>
             </div>
+            <Footer></Footer>
+
         </div>
     );
 };
