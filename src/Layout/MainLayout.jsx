@@ -6,9 +6,11 @@ import Footer from '../components/Footer';
 const MainLayout = () => {
     return (
         <div>
-           <Navber></Navber>
-           <Outlet></Outlet>
-           <Footer></Footer> 
+            <Navber></Navber>
+            <div className='w-11/13 mx-auto'>
+                <Outlet></Outlet>
+                <Footer></Footer>
+            </div>
         </div>
     );
 };
