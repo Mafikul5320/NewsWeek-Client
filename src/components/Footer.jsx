@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Navber = () => {
+const Footer = () => {
     return (
         <div>
-            Navber
+            Footer
         </div>
     );
 };
 
-export default Navber;
+export default Footer;
