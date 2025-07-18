@@ -19,7 +19,7 @@ const Navber = () => {
                     </div>
 
                     {/* Center Logo */}
-                    <div className="text-7xl font-serif text-[#F3910B] italic">
+                    <div className="text-7xl font-serif text-amber-500 italic">
                         NewsWeek<span className="text-xs align-top ml-1">PRO</span>
                     </div>
 
@@ -37,12 +37,12 @@ const Navber = () => {
 
                 {/* Navigation Links */}
                 <nav className="flex justify-center gap-6 py-2 text-sm font-semibold">
-                    <NavLink> All Publisher</NavLink>
-                    <NavLink> All Publisher</NavLink>
-                    <NavLink> All Publisher</NavLink>
-                    <NavLink> All Publisher</NavLink>
-                    <NavLink> All Publisher</NavLink>
-                    <NavLink>Plans</NavLink>
+                    <NavLink> Home</NavLink>
+                    <NavLink> Add Articles</NavLink>
+                    <NavLink> All Articles</NavLink>
+                    <NavLink> Subscription</NavLink>
+                    <NavLink> My Articles</NavLink>
+                    <NavLink>Premium Articles</NavLink>
                     <NavLink>About</NavLink>
                 </nav>
             </div>
