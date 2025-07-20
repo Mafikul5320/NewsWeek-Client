@@ -7,8 +7,8 @@ const PlansSection = () => {
 
 const plans = [
   {
-    name: 'Free Reader',
-    price: 0,
+    name: '1 Minute Plan',
+    price: 0.99,
     period: 'Forever',
     description: 'Ideal for casual readers.',
     icon: Users,
@@ -162,7 +162,7 @@ const plans = [
                           : 'bg-slate-900 text-white hover:bg-slate-800 shadow-md hover:shadow-lg'
                       }`}
                     >
-                      {plan.price === 0 ? 'Get Started Free' : 'Upgrade to Premium'}
+                      {plan.price === 0 ? 'Get Started 1 Minute' : 'Upgrade to Premium'}
                       {plan.popular && <Crown className="ml-2 h-5 w-5" />}
                     </Link>
                   </div>

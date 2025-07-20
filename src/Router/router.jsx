@@ -5,6 +5,7 @@ import AddArticles from "../Pages/AddArticles";
 import AllArticlesPage from "../Pages/AllArticles";
 import ArticlesDetails from "../Pages/ArticlesDetails";
 import PlansSection from "../Home/PlansSection";
+import PaymentPage from "../Pages/PaymentPage";
 
 export const router = createBrowserRouter([
     {
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
             {
                 path: "/subscription",
                 Component: PlansSection
+            },
+            {
+                path: "/payment",
+                Component: PaymentPage
             }
         ]
     }

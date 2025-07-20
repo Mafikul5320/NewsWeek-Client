@@ -40,7 +40,7 @@ const Navber = () => {
                     <NavLink> Home</NavLink>
                     <NavLink to={'/add-articles'}> Add Articles</NavLink>
                     <NavLink to={'/all-articles'}> All Articles</NavLink>
-                    <NavLink> Subscription</NavLink>
+                    <NavLink to={'/subscription'}> Subscription</NavLink>
                     <NavLink> My Articles</NavLink>
                     <NavLink>Premium Articles</NavLink>
                     <NavLink>About</NavLink>
