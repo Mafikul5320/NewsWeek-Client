@@ -1,37 +1,38 @@
+import { CircleX } from 'lucide-react';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Select from 'react-select';
 
 const AddArticles = () => {
-  const [formData, setFormData] = useState({
-    title: '',
-    publisher: '',
-    tags: '',
-    description: '',
-  });
-
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [imagePreview, setImagePreview] = useState('');
-  const [imageFile, setImageFile] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const tagOptions = [
+    { value: 'Technology', label: 'Technology' },
+    { value: 'AI', label: 'AI' },
+    { value: 'React', label: 'React' },
+    { value: 'Programming', label: 'Programming' },
+    { value: 'Startups', label: 'Startups' },
+  ];
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Submitted Data:', { ...formData, imageFile });
+  const onsubmit = (data) => {
+    const tags = selectedTags.map(tag => tag.value);
+    const finalData = { ...data, tags };
+
+    console.log(finalData);
   };
 
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-slate-50 to-slate-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">
             Add New Article
@@ -41,9 +42,8 @@ const AddArticles = () => {
           </p>
         </div>
 
-        {/* Form */}
         <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-          <form onSubmit={handleSubmit} className="p-8 space-y-8">
+          <form onSubmit={handleSubmit(onsubmit)} className="p-8 space-y-8">
             {/* Title */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -51,13 +51,16 @@ const AddArticles = () => {
               </label>
               <input
                 type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
                 placeholder="Enter article title..."
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none"
-                required
+                className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
+                {...register("title", { required: "Article Title is required" })}
               />
+              {errors.title && (
+                <p className='text-red-500 py-1 flex items-center'>
+                  <CircleX size={13} />
+                  <span className='pl-1 font-semibold font-mono'>{errors.title.message} !</span>
+                </p>
+              )}
             </div>
 
             {/* Image Upload */}
@@ -75,10 +78,7 @@ const AddArticles = () => {
                     />
                     <button
                       type="button"
-                      onClick={() => {
-                        setImageFile(null);
-                        setImagePreview('');
-                      }}
+                      onClick={() => setImagePreview('')}
                       className="text-red-600 hover:text-red-700 text-sm font-medium"
                     >
                       Remove Image
@@ -94,10 +94,10 @@ const AddArticles = () => {
                         </span>
                         <input
                           type="file"
+                          {...register("image", { required: "Article image is required" })}
                           accept="image/*"
                           onChange={handleImageChange}
                           className="hidden"
-                          required
                         />
                       </label>
                     </div>
@@ -107,6 +107,12 @@ const AddArticles = () => {
                   </div>
                 )}
               </div>
+              {errors.image && (
+                <p className='text-red-500 py-1 flex items-center'>
+                  <CircleX size={13} />
+                  <span className='pl-1 font-semibold font-mono'>{errors.image.message} !</span>
+                </p>
+              )}
             </div>
 
             {/* Publisher */}
@@ -114,34 +120,43 @@ const AddArticles = () => {
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Publisher *
               </label>
-              <input
-                type="text"
-                name="publisher"
-                value={formData.publisher}
-                onChange={handleChange}
-                placeholder="Enter publisher name..."
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none"
-                required
-              />
+              <select
+                {...register("publisher", { required: "Publisher is required" })}
+                className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
+              >
+                <option value="">Select Publisher</option>
+                <option value="Prothom Alo">Prothom Alo</option>
+                <option value="The Daily Star">The Daily Star</option>
+                <option value="BBC Bangla">BBC Bangla</option>
+                <option value="TechCrunch">TechCrunch</option>
+                {/* You can add more publishers or fetch them dynamically if needed */}
+              </select>
+              {errors.publisher && (
+                <p className="text-red-500 py-1 flex items-center">
+                  <CircleX size={13} />
+                  <span className="pl-1 font-semibold font-mono">{errors.publisher.message} !</span>
+                </p>
+              )}
             </div>
 
-            {/* Tags */}
+            {/* Tags (React-Select) */}
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Tags *
               </label>
-              <input
-                type="text"
-                name="tags"
-                value={formData.tags}
-                onChange={handleChange}
-                placeholder="Comma-separated (e.g. Tech,AI,React)"
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none"
-                required
+              <Select
+                options={tagOptions}
+                isMulti
+                {...register("tag")}
+                onChange={setSelectedTags}
+                placeholder="Select the tags"
               />
-              <p className="text-slate-500 text-sm mt-1">
-                Example: Web, JavaScript, Frontend
-              </p>
+              {selectedTags.length === 0 && (
+                <p className="text-red-500 py-1 flex items-center">
+                  <CircleX size={13} />
+                  <span className="pl-1 font-semibold font-mono">Tags are required!</span>
+                </p>
+              )}
             </div>
 
             {/* Description */}
@@ -150,28 +165,23 @@ const AddArticles = () => {
                 Article Content *
               </label>
               <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
+                {...register("description", { required: "Description is required" })}
                 rows={10}
                 placeholder="Write your article here..."
-                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none resize-none"
-                required
+                className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
               />
-              <p className="text-slate-500 text-sm mt-1">
-                Minimum 100 characters required for quality content
-              </p>
+              {errors.description && (
+                <p className='text-red-500 py-1 flex items-center'>
+                  <CircleX size={13} />
+                  <span className='pl-1 font-semibold font-mono'>{errors.description.message} !</span>
+                </p>
+              )}
             </div>
 
             {/* Buttons */}
             <div className="flex items-center justify-between pt-6 border-t border-slate-200">
               <button
                 type="reset"
-                onClick={() => {
-                  setFormData({ title: '', publisher: '', tags: '', description: '' });
-                  setImageFile(null);
-                  setImagePreview('');
-                }}
                 className="px-6 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors font-medium"
               >
                 Cancel

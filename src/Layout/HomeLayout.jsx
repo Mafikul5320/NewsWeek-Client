@@ -6,6 +6,7 @@ import StatisticsSection from '../Home/StatisticsSection';
 import PublishersSection from '../Home/PublishersSection';
 import ReviewSection from '../Home/ReviewSection';
 import FeaturedCategories from '../Home/FeaturedCategories';
+import PlanSection from '../Home/PlanSection';
 
 const HomeLayout = () => {
     return (
@@ -19,6 +20,7 @@ const HomeLayout = () => {
             <PublishersSection></PublishersSection>
             <ReviewSection></ReviewSection>
             <FeaturedCategories></FeaturedCategories>
+            <PlanSection></PlanSection>
         </div>
     );
 };

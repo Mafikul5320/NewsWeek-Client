@@ -39,7 +39,7 @@ const Navber = () => {
                 <nav className="flex justify-center gap-6 py-2 text-sm font-semibold">
                     <NavLink> Home</NavLink>
                     <NavLink to={'/add-articles'}> Add Articles</NavLink>
-                    <NavLink> All Articles</NavLink>
+                    <NavLink to={'/all-articles'}> All Articles</NavLink>
                     <NavLink> Subscription</NavLink>
                     <NavLink> My Articles</NavLink>
                     <NavLink>Premium Articles</NavLink>
