@@ -155,7 +155,7 @@ const plans = [
                   </div>
                   <div className="">
                     <Link
-                      to="/subscription"
+                      to="/payment"
                       className={`w-full inline-flex  items-center justify-center px-6 py-4 rounded-xl font-semibold transition-all duration-200 ${
                         plan.popular
                           ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 shadow-lg hover:shadow-xl transform hover:scale-105'

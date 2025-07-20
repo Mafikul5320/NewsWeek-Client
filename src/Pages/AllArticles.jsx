@@ -1,5 +1,5 @@
 import React from "react";
-import { Clock, Eye, Search } from "lucide-react";
+import { Clock, Crown, Eye, Search } from "lucide-react";
 import { Link } from "react-router";
 
 const AllArticles = () => {
@@ -98,6 +98,7 @@ const AllArticles = () => {
                         alt="Climate Summit"
                         className="w-full h-48 object-cover"
                     />
+                    <div className="flex items-center space-x-1 bg-gradient-to-br from-amber-500 to-orange-600 text-white font-medium absolute px-2 py-1 rounded-2xl top-2 right-2"><Crown size={14} /> <span className="text-xs">premium</span></div>
                     <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-sm px-2 py-1 rounded flex items-center gap-1">
                         <Eye size={16} />
                         15,420
@@ -151,9 +152,9 @@ const AllArticles = () => {
                             </div>
                         </div>
                         <Link to={"/Articles-Details"}>
-                        <button  className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">
-                            Read More
-                        </button>
+                            <button className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">
+                                Read More
+                            </button>
                         </Link>
                     </div>
                 </div>
