@@ -6,6 +6,7 @@ import AllArticlesPage from "../Pages/AllArticles";
 import ArticlesDetails from "../Pages/ArticlesDetails";
 import PlansSection from "../Home/PlansSection";
 import PaymentPage from "../Pages/PaymentPage";
+import PremiumArticles from "../Pages/PremiumArticles";
 
 export const router = createBrowserRouter([
     {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
             {
                 path: "/payment",
                 Component: PaymentPage
+            },
+            {
+                path: "/premium-articles",
+                Component: PremiumArticles
             }
         ]
     }
