@@ -34,6 +34,7 @@ const Dashboard = () => {
         <ul className="menu p-4 w-80 min-h-full bg-white  text-base-content">
           {/* Sidebar content */}
           <li ><NavLink to={"/dashboard/all-user"} className={"flex items-center"}><Users size={20} /><span className='pt-1.5'>All Users</span></NavLink></li>
+          <li ><NavLink to={"/dashboard/all-articles"} className={"flex items-center"}><Users size={20} /><span className='pt-1.5'>All Articles</span></NavLink></li>
           <li><a>Articles</a></li>
           <li><a>Analytics</a></li>
         </ul>
