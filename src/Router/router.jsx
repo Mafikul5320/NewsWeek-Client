@@ -8,6 +8,7 @@ import PlansSection from "../Home/PlansSection";
 import PaymentPage from "../Pages/PaymentPage";
 import PremiumArticles from "../Pages/PremiumArticles";
 import MyProfile from "../Pages/MyProfile";
+import UserArticles from "../Pages/UserArticles";
 
 export const router = createBrowserRouter([
     {
@@ -47,8 +48,8 @@ export const router = createBrowserRouter([
                 Component: MyProfile
             },
             {
-                pathL: "/MyArticles",
-                
+                path: "/user-articles",
+                Component: UserArticles
             }
         ]
     }

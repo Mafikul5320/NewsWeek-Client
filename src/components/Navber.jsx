@@ -41,7 +41,7 @@ const Navber = () => {
                     <NavLink to={'/add-articles'}> Add Articles</NavLink>
                     <NavLink to={'/all-articles'}> All Articles</NavLink>
                     <NavLink to={'/subscription'}> Subscription</NavLink>
-                    <NavLink> My Articles</NavLink>
+                    <NavLink to={"/user-articles"}> My Articles</NavLink>
                     <NavLink to={"/premium-articles"}>Premium Articles</NavLink>
                     <NavLink>About</NavLink>
                     <NavLink to={"/my-profile"}>My Profile</NavLink>
