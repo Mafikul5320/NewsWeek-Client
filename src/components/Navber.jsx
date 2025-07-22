@@ -44,6 +44,7 @@ const Navber = () => {
                     <NavLink to={"/user-articles"}> My Articles</NavLink>
                     <NavLink to={"/premium-articles"}>Premium Articles</NavLink>
                     <NavLink>About</NavLink>
+                    <NavLink to={"/dashboard"}>Dashboard</NavLink>
                     <NavLink to={"/my-profile"}>My Profile</NavLink>
                 </nav>
             </div>

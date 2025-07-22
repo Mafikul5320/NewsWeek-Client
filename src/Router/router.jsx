@@ -9,6 +9,9 @@ import PaymentPage from "../Pages/PaymentPage";
 import PremiumArticles from "../Pages/PremiumArticles";
 import MyProfile from "../Pages/MyProfile";
 import UserArticles from "../Pages/UserArticles";
+import Dashboard from "../Dashboard/Dashboard";
+import DashboardLayout from "../Layout/DashboardLayout";
+import AllUsers from "../Dashboard/AllUsers";
 
 export const router = createBrowserRouter([
     {
@@ -50,6 +53,20 @@ export const router = createBrowserRouter([
             {
                 path: "/user-articles",
                 Component: UserArticles
+            },
+        ]
+    },
+    {
+        path: "/dashboard",
+        Component: Dashboard,
+        children: [
+            {
+                path: "/dashboard",
+                Component: DashboardLayout
+            },
+            {
+                path: "all-user",
+                Component: AllUsers
             }
         ]
     }
