@@ -1,11 +1,10 @@
 import React from 'react';
+import AdminDashboard from '../Dashboard/Admin/AdminDashboard';
 
 const DashboardLayout = () => {
     return (
         <div>
-                    <div className="p-4">
-          <h1 className="text-2xl font-bold">Welcome to Dashboard</h1>
-        </div>
+            <AdminDashboard></AdminDashboard>
         </div>
     );
 };

@@ -13,6 +13,7 @@ import Dashboard from "../Dashboard/Dashboard";
 import DashboardLayout from "../Layout/DashboardLayout";
 import AllUsers from "../Dashboard/AllUsers";
 import AllArticlesDash from "../Dashboard/AllArticlesDash";
+import AddPublisher from "../Dashboard/AddPublisher";
 
 export const router = createBrowserRouter([
     {
@@ -72,7 +73,11 @@ export const router = createBrowserRouter([
             {
                 path: "all-articles",
                 Component: AllArticlesDash
-            }
+            },
+            {
+                path: "add-publisher",
+                Component: AddPublisher
+            },
         ]
     }
 ])
