@@ -46,7 +46,6 @@ const Login = () => {
               </div>
               {errors.email && <p className='flex items-center gap-1 pt-1 text-orange-600 font-mono text-sm'> <CircleX size={12} />{errors.email.message}</p>}
             </div>
-            
             <div className="mb-6">
               <div className="relative group w-full">
                 <FaLock className="absolute left-0 top-1/2 transform -translate-y-1/2 text-gray-500 ml-1 z-10" />
