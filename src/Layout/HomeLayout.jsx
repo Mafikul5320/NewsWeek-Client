@@ -1,14 +1,11 @@
 import React from 'react';
 import HeroSection from '../Home/HeroSection';
 import TrendingArticles from '../Home/TrendingArticles';
-import PlansSection from '../Home/PlansSection';
 import StatisticsSection from '../Home/StatisticsSection';
 import PublishersSection from '../Home/PublishersSection';
 import ReviewSection from '../Home/ReviewSection';
 import FeaturedCategories from '../Home/FeaturedCategories';
 import PlanSection from '../Home/PlanSection';
-import PaymentPage from '../Pages/PaymentPage';
-
 const HomeLayout = () => {
     return (
         <div>

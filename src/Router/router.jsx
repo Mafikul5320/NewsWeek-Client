@@ -14,6 +14,8 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import AllUsers from "../Dashboard/AllUsers";
 import AllArticlesDash from "../Dashboard/AllArticlesDash";
 import AddPublisher from "../Dashboard/AddPublisher";
+import Login from "../Auth/Login";
+import Register from "../Auth/Register";
 
 export const router = createBrowserRouter([
     {
@@ -56,6 +58,14 @@ export const router = createBrowserRouter([
                 path: "/user-articles",
                 Component: UserArticles
             },
+            {
+                path: "/login",
+                Component: Login
+            },
+            {
+                path: "/register",
+                Component: Register
+            }
         ]
     },
     {

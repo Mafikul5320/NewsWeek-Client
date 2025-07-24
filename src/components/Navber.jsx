@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { use } from 'react';
 import { FaUser, FaBars, FaSearch } from "react-icons/fa";
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
+import { AuthContext } from '../Context/AuthContext';
 
 const Navber = () => {
+    const { email } = use(AuthContext);
+    console.log(email)
     return (
         <div className="w-full border-b border-gray-300">
             <div className='w-11/13 mx-auto'>
@@ -25,10 +28,12 @@ const Navber = () => {
 
                     {/* Right Section */}
                     <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-1">
-                            <FaUser />
-                            <span className="text-sm">My account</span>
-                        </div>
+                        <Link to={"/login"}>
+                            <div className="flex items-center gap-1">
+                                <FaUser />
+                                <span className="text-sm">My account</span>
+                            </div>
+                        </Link>
                         <button className="bg-red-600 text-white px-4 py-1 rounded font-semibold">
                             SUBSCRIBE
                         </button>
