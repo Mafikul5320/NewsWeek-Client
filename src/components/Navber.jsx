@@ -1,11 +1,7 @@
-import React, { use } from 'react';
 import { FaUser, FaBars, FaSearch } from "react-icons/fa";
 import { Link, NavLink } from 'react-router';
-import { AuthContext } from '../Context/AuthContext';
 
 const Navber = () => {
-    const { email } = use(AuthContext);
-    console.log(email)
     return (
         <div className="w-full border-b border-gray-300">
             <div className='w-11/13 mx-auto'>

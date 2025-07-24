@@ -4,10 +4,18 @@ import Lottie from 'lottie-react';
 import LoginAnimation from '../../public/Login.json';
 import { useForm } from 'react-hook-form';
 import { CircleX } from 'lucide-react';
+import useAuth from '../Hooks/useAuth';
 
 const Login = () => {
+  const { Login } = useAuth();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
+    const { email, password } = data;
+    Login(email, password).then(res => {
+      console.log(res);
+    }).catch(error => {
+      console.log(error)
+    })
     console.log(data);
   }
   return (
@@ -29,9 +37,10 @@ const Login = () => {
                 <FaUser className="absolute left-0 top-1/2 transform -translate-y-1/2 text-gray-500 ml-1 z-10" />
                 <input
                   type="text"
-                  {...register("email", { required: "Email Address is required", 
+                  {...register("email", {
+                    required: "Email Address is required",
                     pattern: { value: /^\S+@\S+$/i, message: "Invalid email" }
-                   })}
+                  })}
                   placeholder="Enter Your Email"
                   className="pl-8 w-full bg-transparent py-2 text-gray-800 outline-none border-none"
                 />
@@ -52,7 +61,7 @@ const Login = () => {
                 <input
                   type="text"
                   placeholder="Enter Password"
-                  {...register("password", {required: "Enter Your Password"})}
+                  {...register("password", { required: "Enter Your Password" })}
                   className="pl-8 w-full bg-transparent py-2 text-gray-800 outline-none border-none"
                 />
 

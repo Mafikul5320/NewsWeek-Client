@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
-import { FaFacebookF, FaTwitter, FaGoogle, FaUser, FaLock, FaEnvelope, FaCheck, FaImage, FaGithub } from "react-icons/fa";
+import {  FaGoogle, FaUser, FaLock, FaEnvelope, FaCheck, FaImage, FaGithub } from "react-icons/fa";
 import Lottie from 'lottie-react';
 import RegisterAnimation from '../../public/Register.json';
 import { useForm } from 'react-hook-form';
-import { CircleDot, CircleX } from 'lucide-react';
+import { CircleX } from 'lucide-react';
+import useAuth from '../Hooks/useAuth';
 
 const Register = () => {
+  const { Register } = useAuth();
   const [preview, setPreview] = useState(null);
   const { handleSubmit, register, formState: { errors } } = useForm();
   const onSubmit = (data) => {
-    console.log(data, preview)
+    const { email, password } = data;
+    Register(email, password).then(res => {
+      console.log(res)
+    }).catch(error => {
+      console.log(error)
+    })
   };
   const handleImageChange = (e) => {
     const image = e.target.files[0];
-    if(image){
+    if (image) {
       setPreview(URL.createObjectURL(image));
     }
     console.log(image)
