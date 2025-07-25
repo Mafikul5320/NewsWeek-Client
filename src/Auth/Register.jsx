@@ -8,17 +8,27 @@ import useAuth from '../Hooks/useAuth';
 import { GoogleAuthProvider } from 'firebase/auth';
 
 const Register = () => {
-  const { Register, GoogleSignIn } = useAuth();
+  const { Register, GoogleSignIn, UpdateUser } = useAuth();
   const [RegLoading, setregLoading] = useState(true)
   const provider = new GoogleAuthProvider();
   const [preview, setPreview] = useState(null);
   const { handleSubmit, register, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     setregLoading(false)
-    const { email, password } = data;
+    const { email, password, displayName } = data;
+    console.log(displayName, preview)
     Register(email, password).then(res => {
-      console.log(res)
       setregLoading(true)
+      console.log(res)
+      UpdateUser({
+        displayName,
+        photoURL: preview
+      }).then(() => {
+        setregLoading(true)
+      }).catch(error => {
+        console.log(error)
+        setregLoading(true)
+      })
     }).catch(error => {
       console.log(error)
       setregLoading(true)
