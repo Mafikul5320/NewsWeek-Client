@@ -1,7 +1,16 @@
 import { FaUser, FaBars, FaSearch } from "react-icons/fa";
 import { Link, NavLink } from 'react-router';
+import useAuth from "../Hooks/useAuth";
 
 const Navber = () => {
+    const { User, setUser, SignOut } = useAuth();
+    const handelLogout = () => {
+        SignOut().then(() => {
+            setUser(null)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
     return (
         <div className="w-full border-b border-gray-300">
             <div className='w-11/13 mx-auto'>
@@ -24,12 +33,14 @@ const Navber = () => {
 
                     {/* Right Section */}
                     <div className="flex items-center gap-6">
-                        <Link to={"/login"}>
-                            <div className="flex items-center gap-1">
-                                <FaUser />
-                                <span className="text-sm">My account</span>
-                            </div>
-                        </Link>
+                        {User ? <button onClick={handelLogout} className="btn btn-active">Logout</button> : <div>
+                            <Link to={"/login"}>
+                                <button className="flex items-center gap-1">
+                                    <FaUser />
+                                    <span className="text-sm">My account</span>
+                                </button>
+                            </Link>
+                        </div>}
                         <button className="bg-red-600 text-white px-4 py-1 rounded font-semibold">
                             SUBSCRIBE
                         </button>

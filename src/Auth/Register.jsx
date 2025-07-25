@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
-import {  FaGoogle, FaUser, FaLock, FaEnvelope, FaCheck, FaImage, FaGithub } from "react-icons/fa";
+import { FaGoogle, FaUser, FaLock, FaEnvelope, FaCheck, FaImage, FaGithub } from "react-icons/fa";
 import Lottie from 'lottie-react';
 import RegisterAnimation from '../../public/Register.json';
 import { useForm } from 'react-hook-form';
 import { CircleX } from 'lucide-react';
 import useAuth from '../Hooks/useAuth';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const Register = () => {
-  const { Register } = useAuth();
+  const { Register, GoogleSignIn } = useAuth();
+  const [RegLoading, setregLoading] = useState(true)
+  const provider = new GoogleAuthProvider();
   const [preview, setPreview] = useState(null);
   const { handleSubmit, register, formState: { errors } } = useForm();
   const onSubmit = (data) => {
+    setregLoading(false)
     const { email, password } = data;
     Register(email, password).then(res => {
       console.log(res)
+      setregLoading(true)
+    }).catch(error => {
+      console.log(error)
+      setregLoading(true)
+    })
+  };
+  const handelLogin = () => {
+    GoogleSignIn(provider).then(res => {
+      console.log(res);
     }).catch(error => {
       console.log(error)
     })
-  };
+  }
   const handleImageChange = (e) => {
     const image = e.target.files[0];
     if (image) {
@@ -140,9 +153,7 @@ const Register = () => {
             </div>
 
             {/* Register Button */}
-            <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg font-semibold shadow-md hover:shadow-xl transition">
-              Register
-            </button>
+            {RegLoading ? <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg font-semibold shadow-md hover:shadow-xl transition">Register</button> : <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg font-semibold shadow-md hover:shadow-xl transition"><span class="loading loading-spinner loading-sm"></span> Register</button>}
           </form>
 
           {/* Divider */}
@@ -154,7 +165,7 @@ const Register = () => {
 
           {/* Social Login */}
           <div className="flex gap-4 justify-center">
-            <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+            <button onClick={handelLogin} className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaGoogle />
             </button>
             <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">

@@ -1,22 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaFacebookF, FaTwitter, FaGoogle, FaUser, FaLock, FaGithub } from "react-icons/fa";
 import Lottie from 'lottie-react';
 import LoginAnimation from '../../public/Login.json';
 import { useForm } from 'react-hook-form';
 import { CircleX } from 'lucide-react';
 import useAuth from '../Hooks/useAuth';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 const Login = () => {
-  const { Login } = useAuth();
+  const { Login, GoogleSignIn } = useAuth();
+  const [logLoading, setLogLoading] = useState(true)
+  const provider = new GoogleAuthProvider();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
+    setLogLoading(false)
     const { email, password } = data;
     Login(email, password).then(res => {
+      console.log(res);
+      setLogLoading(true)
+    }).catch(error => {
+      console.log(error)
+      setLogLoading(true)
+    })
+    console.log(data);
+  }
+  const handelLogin = () => {
+    GoogleSignIn(provider).then(res => {
       console.log(res);
     }).catch(error => {
       console.log(error)
     })
-    console.log(data);
   }
   return (
     <div className="my-26 flex items-center justify-center p-6">
@@ -84,7 +97,7 @@ const Login = () => {
             </div>
 
             {/* Login Button */}
-            <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg font-semibold shadow-md hover:shadow-xl transition">Log In</button>
+            {logLoading ? <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg font-semibold shadow-md hover:shadow-xl transition">Log In</button> : <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-2 rounded-lg font-semibold shadow-md hover:shadow-xl transition"><span class="loading loading-spinner loading-sm"></span> Log In</button>}
           </form>
 
           {/* Divider */}
@@ -96,7 +109,7 @@ const Login = () => {
 
           {/* Social Login */}
           <div className="flex gap-4 justify-center">
-            <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+            <button onClick={handelLogin} className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
               <FaGoogle />
             </button>
             <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200">
