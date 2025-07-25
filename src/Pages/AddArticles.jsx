@@ -1,9 +1,14 @@
+import axios from 'axios';
 import { CircleX } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Select from 'react-select';
+import useAuth from '../Hooks/useAuth';
+import useAxiosSucure from '../Hooks/useAxiosSucure';
 
 const AddArticles = () => {
+  const { User } = useAuth();
+  const axiosSucure = useAxiosSucure();
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [imagePreview, setImagePreview] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
@@ -16,18 +21,22 @@ const AddArticles = () => {
     { value: 'Startups', label: 'Startups' },
   ];
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-    }
+    const formData = new FormData();
+    formData.append('image', file)
+    const uploadImage = await axios.post(`https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_imagebb_key}`, formData)
+
+    setImagePreview(uploadImage.data.data.url);
+    console.log(uploadImage.data.data.url);
   };
-
-  const onsubmit = (data) => {
+  const onsubmit = async (data) => {
     const tags = selectedTags.map(tag => tag.value);
-    const finalData = { ...data, tags };
-
-    console.log(finalData);
+    const { title, publisher } = data;
+    const articleData = { title, publisher, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName }
+    const res = await axiosSucure.post("/article", articleData)
+    console.log(res.data.insertedId)
+    return res.data;
   };
 
   return (
@@ -147,7 +156,7 @@ const AddArticles = () => {
               <Select
                 options={tagOptions}
                 isMulti
-                {...register("tag")}
+                {...register("tags")}
                 onChange={setSelectedTags}
                 placeholder="Select the tags"
               />
