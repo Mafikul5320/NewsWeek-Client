@@ -7,8 +7,24 @@ import {
   Bookmark,
   Share2,
 } from "lucide-react";
+import useAuth from "../Hooks/useAuth";
+import useAxios from "../Hooks/useAxios";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router";
 
 const ArticlesDetails = () => {
+  const { User } = useAuth();
+  const UserAxios = useAxios();
+  const params = useParams();
+  console.log(params?.id)
+  const { data: article } = useQuery({
+    queryKey: ["article", User?.email],
+    queryFn: async () => {
+      const res = await UserAxios.get(`http://localhost:3000/articles?i=${params?.id}`)
+      return res.data;
+    }
+  })
+  const { categories, image, tag, title, description, date, _id } = article
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-slate-50 to-slate-100">
       <div className=" w-9/13 mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -25,7 +41,7 @@ const ArticlesDetails = () => {
           {/* Image Header */}
           <div className="relative">
             <img
-              src="https://cdn.pixabay.com/photo/2020/12/18/10/31/light-bulb-5840889_1280.jpg"
+              src={image}
               alt="Climate Summit"
               className="w-full h-64 md:h-96 object-cover"
             />
@@ -34,7 +50,7 @@ const ArticlesDetails = () => {
             <div className="absolute bottom-6 left-6 right-6 text-white">
               <div className="flex items-center space-x-4 text-sm mb-4">
                 <span className="bg-amber-500 px-3 py-1 rounded-full font-semibold">
-                  Global News Network
+                  {categories}
                 </span>
                 <div className="flex items-center space-x-1">
                   <Eye className="h-4 w-4" />
@@ -42,7 +58,7 @@ const ArticlesDetails = () => {
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock className="h-4 w-4" />
-                  <span>Jul 20, 2025</span>
+                  <span>{date}</span>
                 </div>
               </div>
             </div>
@@ -51,7 +67,7 @@ const ArticlesDetails = () => {
           {/* Article Content */}
           <div className="p-8">
             <h1 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-tight">
-              Global Climate Summit Reaches Historic Agreement on Carbon Emissions
+              {title}
             </h1>
 
             {/* Author Section */}
@@ -86,7 +102,7 @@ const ArticlesDetails = () => {
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-8">
-              {["Climate", "Politics", "Environment"].map((tag) => (
+              {tag.map((tag) => (
                 <span
                   key={tag}
                   className="px-3 py-1 bg-amber-100 text-amber-700 text-sm rounded-full font-medium"
@@ -99,17 +115,7 @@ const ArticlesDetails = () => {
             {/* Description */}
             <div className="prose prose-lg max-w-none">
               <div className="text-slate-700 leading-relaxed whitespace-pre-line">
-                World leaders unite in an unprecedented climate action plan
-                that could reshape global energy policies for the next decade.
-                The agreement includes binding targets for carbon emission
-                reduction, investments in renewable energy, and collaborative
-                frameworks for environmental innovation.
-
-                This historic event marks a turning point in international
-                cooperation on climate change, setting the stage for a
-                sustainable future. Leaders from over 100 countries were
-                present, and the summit concluded with a renewed sense of
-                urgency and responsibility.
+               {description}
               </div>
             </div>
 

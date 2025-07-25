@@ -1,8 +1,21 @@
-import React from "react";
 import { Clock, Crown, Eye, Search } from "lucide-react";
 import { Link } from "react-router";
+import useAuth from "../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import useAxios from "../../Hooks/useAxios";
+import AllArticle from "./AllArticle";
 
 const AllArticles = () => {
+    const { User } = useAuth();
+    const UserAxios = useAxios();
+    const { data: article } = useQuery({
+        queryKey: ["article", User?.email],
+        queryFn: async () => {
+            const res = await UserAxios.get(`http://localhost:3000/articles?email=${User?.email}`)
+            return res.data;
+        }
+    })
+    console.log(article)
     return (
         <div className="my-12 w-11/13 mx-auto">
 
@@ -88,75 +101,10 @@ const AllArticles = () => {
                     </div> */}
                 </div>
             </div>
-
-
-            <div className="max-w-sm rounded-2xl overflow-hidden shadow-lg bg-white border border-slate-200">
-                {/* Image with overlay */}
-                <div className="relative">
-                    <img
-                        src="https://cdn.pixabay.com/photo/2020/12/18/10/31/light-bulb-5840889_1280.jpg"
-                        alt="Climate Summit"
-                        className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-sm px-2 py-1 rounded flex items-center gap-1">
-                        <Eye size={16} />
-                        15,420
-                    </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-5">
-                    {/* Publisher and Date */}
-                    <div className="flex justify-between items-center text-sm text-slate-500 mb-2">
-                        <span className="text-amber-600 font-semibold">Global News Network</span>
-                        <div className="flex items-center space-x-2">
-                            <Clock className="h-3 w-3" />
-                            <span>Jul 20, 2025</span>
-                        </div>
-                    </div>
-
-                    {/* Title */}
-                    <h2 className="text-lg font-bold text-slate-800 mb-2 leading-snug">
-                        Global Climate Summit Reaches Historic Agreement on Carbon Emissions
-                    </h2>
-
-                    {/* Description */}
-                    <p className="text-sm text-slate-600 mb-3 line-clamp-3">
-                        World leaders unite in unprecedented climate action plan that could reshape global energy policies for the next decade. The agreement includes binding...
-                    </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                        {["Climate", "Politics", "Environment"].map((tag) => (
-                            <span
-                                key={tag}
-                                className="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-medium"
-                            >
-                                {tag}
-                            </span>
-                        ))}
-                    </div>
-
-                    {/* Footer */}
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <img
-                                src="https://randomuser.me/api/portraits/women/44.jpg"
-                                alt="Author"
-                                className="w-10 h-10 rounded-full"
-                            />
-                            <div>
-                                <p className="text-sm font-medium text-slate-800">Sarah Johnson</p>
-                                <p className="text-xs text-slate-500">Journalist</p>
-                            </div>
-                        </div>
-                        <Link to={"/Articles-Details"}>
-                            <button className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">
-                                Read More
-                            </button>
-                        </Link>
-                    </div>
-                </div>
+            <div className="grid grid-cols-4 gap-3">
+                {
+                    article?.map(oneArticle => <AllArticle key={oneArticle._id} oneArticle={oneArticle}></AllArticle>)
+                }
             </div>
         </div>
     );

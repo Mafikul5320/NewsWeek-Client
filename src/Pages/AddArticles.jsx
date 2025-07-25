@@ -30,10 +30,16 @@ const AddArticles = () => {
     setImagePreview(uploadImage.data.data.url);
     console.log(uploadImage.data.data.url);
   };
+  const date = new Date();
+  const formattedDate = date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit'
+  });
   const onsubmit = async (data) => {
     const tags = selectedTags.map(tag => tag.value);
-    const { title, publisher } = data;
-    const articleData = { title, publisher, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName }
+    const { title, publisher, categories, description } = data;
+    const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate }
     const res = await axiosSucure.post("/article", articleData)
     console.log(res.data.insertedId)
     return res.data;
@@ -125,6 +131,30 @@ const AddArticles = () => {
             </div>
 
             {/* Publisher */}
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">
+                Categories *
+              </label>
+              <select
+                {...register("categories", { required: "Publisher is required" })}
+                className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
+              >
+                <option value="">Select Categories</option>
+                <option value="Technology">Technology</option>
+                <option value="Politics">Politics</option>
+                <option value="Business">Business</option>
+                <option value="Health">Health</option>
+                <option value="Sports">Sports</option>
+                <option value="World">World</option>
+                {/* You can add more publishers or fetch them dynamically if needed */}
+              </select>
+              {errors.publisher && (
+                <p className="text-red-500 py-1 flex items-center">
+                  <CircleX size={13} />
+                  <span className="pl-1 font-semibold font-mono">{errors.publisher.message} !</span>
+                </p>
+              )}
+            </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 Publisher *

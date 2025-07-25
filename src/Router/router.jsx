@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router";
 import MainLayout from "../Layout/MainLayout";
 import HomeLayout from "../Layout/HomeLayout";
 import AddArticles from "../Pages/AddArticles";
-import AllArticlesPage from "../Pages/AllArticles";
 import ArticlesDetails from "../Pages/ArticlesDetails";
 import PlansSection from "../Home/PlansSection";
 import PaymentPage from "../Pages/PaymentPage";
@@ -16,6 +15,7 @@ import AllArticlesDash from "../Dashboard/AllArticlesDash";
 import AddPublisher from "../Dashboard/AddPublisher";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
+import AllArticles from "../Pages/AllArticle/AllArticles";
 
 export const router = createBrowserRouter([
     {
@@ -32,10 +32,10 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/all-articles",
-                Component: AllArticlesPage
+                Component: AllArticles
             },
             {
-                path: "/Articles-Details",
+                path: "/Articles-Details/:id",
                 Component: ArticlesDetails
             },
             {
