@@ -4,7 +4,6 @@ import HomeLayout from "../Layout/HomeLayout";
 import AddArticles from "../Pages/AddArticles";
 import ArticlesDetails from "../Pages/ArticlesDetails";
 import PlansSection from "../Home/PlansSection";
-import PaymentPage from "../Pages/PaymentPage";
 import PremiumArticles from "../Pages/PremiumArticles";
 import MyProfile from "../Pages/MyProfile";
 import UserArticles from "../Pages/UserArticles";
@@ -16,6 +15,7 @@ import AddPublisher from "../Dashboard/AddPublisher";
 import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import AllArticles from "../Pages/AllArticle/AllArticles";
+import PaymentPage from "../Pages/PaymentSystem/PaymentPage";
 
 export const router = createBrowserRouter([
     {
@@ -43,7 +43,7 @@ export const router = createBrowserRouter([
                 Component: PlansSection
             },
             {
-                path: "/payment",
+                path: "/payment/:id",
                 Component: PaymentPage
             },
             {

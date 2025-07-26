@@ -1,67 +1,27 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router';
 import { Check, Crown, Star, Zap, Shield, Users } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import useAuth from '../Hooks/useAuth';
+import useAxiosSucure from '../Hooks/useAxiosSucure';
 
 const PlansSection = () => {
   const plansRef = useRef(null);
+  const { User } = useAuth();
+  const axiosSucure = useAxiosSucure();
+  const icons = [
+    Users,
+    Crown,
+    Zap
+  ]
 
-const plans = [
-  {
-    name: '1 Minute Plan',
-    price: 0.99,
-    period: 'Forever',
-    description: 'Ideal for casual readers.',
-    icon: Users,
-    color: 'from-slate-500 to-slate-600',
-    bgColor: 'bg-slate-50',
-    borderColor: 'border-slate-200',
-    features: [
-      'Access to public articles',
-      'Mobile responsive reading',
-      'Email newsletter'
-    ],
-    limitations: [
-      '5 articles/day only'
-    ]
-  },
-  {
-    name: 'Premium',
-    price: 19.99,
-    period: 'per month',
-    description: 'Full access to premium news.',
-    icon: Crown,
-    color: 'from-amber-500 to-amber-600',
-    bgColor: 'bg-gradient-to-br from-amber-50 to-orange-50',
-    borderColor: 'border-amber-300',
-    popular: true,
-    features: [
-      'Unlimited article access',
-      'Ad-free experience',
-      'Early breaking news',
-      'Custom reading lists'
-    ]
-  },
-  {
-    name: 'Pro Publisher',
-    price: 49.99,
-    period: 'per month',
-    description: 'For news creators & teams.',
-    icon: Zap,
-    color: 'from-indigo-500 to-purple-600',
-    bgColor: 'bg-gradient-to-br from-indigo-50 to-purple-50',
-    borderColor: 'border-indigo-300',
-    features: [
-      'All Premium features',
-      'Publishing tools',
-      'Content analytics',
-      'Team access'
-    ],
-    limitations: [
-      'Team onboarding required'
-    ]
-  }
-];
-
+  const { data: plans } = useQuery({
+    queryKey: ["subscription", User?.email],
+    queryFn: async()=>{
+      const res = await axiosSucure.get('/subscription')
+      return res.data
+    }
+  })
 
   return (
     <div className="space-y-12 my-12">
@@ -74,15 +34,15 @@ const plans = [
           </h2>
         </div>
         <p className="text-slate-600 text-lg max-w-3xl mx-auto">
-          Whether you're a casual reader or a news enthusiast, we have the perfect plan for you. 
+          Whether you're a casual reader or a news enthusiast, we have the perfect plan for you.
           Upgrade anytime to unlock premium features and exclusive content.
         </p>
       </div>
 
 
       <div ref={plansRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {plans.map((plan, index) => {
-          const IconComponent = plan.icon;
+        {plans?.map((plan, index) => {
+          const IconComponent = icons[index]
           return (
             <div key={index} className="plan-card relative">
               {plan.popular && (
@@ -155,12 +115,11 @@ const plans = [
                   </div>
                   <div className="">
                     <Link
-                      to="/payment"
-                      className={`w-full inline-flex  items-center justify-center px-6 py-4 rounded-xl font-semibold transition-all duration-200 ${
-                        plan.popular
-                          ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 shadow-lg hover:shadow-xl transform hover:scale-105'
-                          : 'bg-slate-900 text-white hover:bg-slate-800 shadow-md hover:shadow-lg'
-                      }`}
+                      to={`/payment/${plan._id}`}
+                      className={`w-full inline-flex  items-center justify-center px-6 py-4 rounded-xl font-semibold transition-all duration-200 ${plan.popular
+                        ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white hover:from-amber-600 hover:to-orange-700 shadow-lg hover:shadow-xl transform hover:scale-105'
+                        : 'bg-slate-900 text-white hover:bg-slate-800 shadow-md hover:shadow-lg'
+                        }`}
                     >
                       {plan.price === 0 ? 'Get Started 1 Minute' : 'Upgrade to Premium'}
                       {plan.popular && <Crown className="ml-2 h-5 w-5" />}
