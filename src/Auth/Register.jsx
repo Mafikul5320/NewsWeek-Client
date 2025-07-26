@@ -6,9 +6,13 @@ import { useForm } from 'react-hook-form';
 import { CircleX } from 'lucide-react';
 import useAuth from '../Hooks/useAuth';
 import { GoogleAuthProvider } from 'firebase/auth';
+import useAxiosSucure from '../Hooks/useAxiosSucure';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Register = () => {
   const { Register, GoogleSignIn, UpdateUser } = useAuth();
+  const axiosSecure = useAxiosSucure();
   const [RegLoading, setregLoading] = useState(true)
   const provider = new GoogleAuthProvider();
   const [preview, setPreview] = useState(null);
@@ -16,15 +20,36 @@ const Register = () => {
   const onSubmit = (data) => {
     setregLoading(false)
     const { email, password, displayName } = data;
+
     console.log(displayName, preview)
+
     Register(email, password).then(res => {
       setregLoading(true)
       console.log(res)
+
       UpdateUser({
         displayName,
         photoURL: preview
-      }).then(() => {
+      }).then(async () => {
+
+        const res = await axiosSecure.post('/user', {
+          displayName,
+          photoURL: preview,
+          email,
+          role: "user",
+          login_at: new Date().toISOString()
+
+        })
+        console.log(res)
+        if (res.data.insertedId ) {
+          Swal.fire({
+            title: "Drag me!",
+            icon: "success",
+            draggable: true
+          });
+        }
         setregLoading(true)
+
       }).catch(error => {
         console.log(error)
         setregLoading(true)
@@ -35,20 +60,40 @@ const Register = () => {
     })
   };
   const handelLogin = () => {
-    GoogleSignIn(provider).then(res => {
-      console.log(res);
+    GoogleSignIn(provider).then(async (res) => {
+      const result = res.user;
+      console.log(result?.email)
+      const userInfo = {
+        email: result?.email,
+        displayName: result?.displayName,
+        photoURL: result?.photoURL,
+        role: "user",
+        login_at: new Date().toISOString()
+      }
+      const userData = await axiosSecure.post('/user', userInfo)
+      console.log(userData.data)
+      if (userData.data.insertedId|| !userData.data.inserted) {
+        Swal.fire({
+          title: "Drag me!",
+          icon: "success",
+          draggable: true
+        });
+      }
     }).catch(error => {
       console.log(error)
     })
   }
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const image = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', image)
     if (image) {
-      setPreview(URL.createObjectURL(image));
+      const uploadImage = await axios.post(`https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_imagebb_key}`, formData)
+
+      setPreview(uploadImage.data.data.url);
     }
     console.log(image)
   }
-
   return (
     <div className="my-20 flex items-center justify-center p-6">
       <div className="w-full max-w-7xl bg-white rounded-2xl shadow-xl flex overflow-hidden">

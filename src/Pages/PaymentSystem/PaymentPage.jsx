@@ -1,4 +1,3 @@
-import React from 'react';
 import PaymentAnimation from '../../../public/CreditCard.json'
 import Lottie from 'lottie-react';
 import { Elements } from '@stripe/react-stripe-js';

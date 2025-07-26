@@ -6,9 +6,12 @@ import { useForm } from 'react-hook-form';
 import { CircleX } from 'lucide-react';
 import useAuth from '../Hooks/useAuth';
 import { GoogleAuthProvider } from 'firebase/auth';
+import useAxiosSucure from '../Hooks/useAxiosSucure';
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const { Login, GoogleSignIn } = useAuth();
+  const axiosSecure =useAxiosSucure();
   const [logLoading, setLogLoading] = useState(true)
   const provider = new GoogleAuthProvider();
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -25,8 +28,25 @@ const Login = () => {
     console.log(data);
   }
   const handelLogin = () => {
-    GoogleSignIn(provider).then(res => {
-      console.log(res);
+    GoogleSignIn(provider).then(async (res) => {
+      const result = res.user;
+      console.log(result?.email)
+      const userInfo = {
+        email: result?.email,
+        displayName: result?.displayName,
+        photoURL: result?.photoURL,
+        role: "user",
+        login_at: new Date().toISOString()
+      }
+      const userData = await axiosSecure.post('/user', userInfo)
+      console.log(userData.data)
+      if (userData.data.insertedId|| !userData.data.inserted) {
+        Swal.fire({
+          title: "Drag me!",
+          icon: "success",
+          draggable: true
+        });
+      }
     }).catch(error => {
       console.log(error)
     })
