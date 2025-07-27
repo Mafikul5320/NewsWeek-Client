@@ -142,12 +142,12 @@ const UserArticles = () => {
                   <td className="px-6 py-4">{article?.views?.toLocaleString()}</td>
                   <td className="px-6 py-4">{article.date}</td>
                   <td className="px-6 py-4 flex gap-3 text-slate-600">
-                    <Link to={`/Articles-Details/${article._id}`}>
+                    <Link to={`/Articles-Details/${article?._id}`}>
                       <Eye className="cursor-pointer hover:text-blue-600" size={18} />
                     </Link>
-                    <Pencil className="cursor-pointer hover:text-yellow-600" size={18} />
+                    <Link to={`/article-update/${article?._id}`}><Pencil className="cursor-pointer hover:text-yellow-600" size={18} /></Link>
                     <Trash2
-                      onClick={() => handleDelete(article._id)}
+                      onClick={() => handleDelete(article?._id)}
                       className="cursor-pointer hover:text-red-600"
                       size={18}
                     />

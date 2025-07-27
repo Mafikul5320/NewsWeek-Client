@@ -16,6 +16,7 @@ import Login from "../Auth/Login";
 import Register from "../Auth/Register";
 import AllArticles from "../Pages/AllArticle/AllArticles";
 import PaymentPage from "../Pages/PaymentSystem/PaymentPage";
+import ArticlesUpdate from "../Pages/ArticlesUpdate";
 
 export const router = createBrowserRouter([
     {
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
             {
                 path: "/register",
                 Component: Register
+            },
+            {
+                path: "/article-update/:id",
+                Component: ArticlesUpdate
             }
         ]
     },
