@@ -15,7 +15,9 @@ const CheckoutForm = ({ data }) => {
 
     const elements = useElements();
     const axiosSucure = useAxiosSucure()
-
+    const price = data?.price * 100;
+    const centsAmount = parseFloat(price.toFixed(2));
+    console.log(centsAmount)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true)
@@ -40,7 +42,7 @@ const CheckoutForm = ({ data }) => {
             console.log('[PaymentMethod]', paymentMethod);
         }
         const res = await axiosSucure.post("/create-payment-intent", {
-            amount: data?.price * 100
+            amount: centsAmount,
         })
         const clientSecret = (res.data.clientSecret);
         const result = await stripe.confirmCardPayment(clientSecret, {

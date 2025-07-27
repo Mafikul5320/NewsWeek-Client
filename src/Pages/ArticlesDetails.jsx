@@ -17,13 +17,20 @@ const ArticlesDetails = () => {
   const UserAxios = useAxios();
   const params = useParams();
   console.log(params?.id)
-  const { data: article } = useQuery({
+  const { data: article, isLoading } = useQuery({
     queryKey: ["article", User?.email],
     queryFn: async () => {
-      const res = await UserAxios.get(`http://localhost:3000/articles?i=${params?.id}`)
+      const res = await UserAxios.get(`/articles?id=${params?.id}`)
+      console.log(res)
       return res.data;
     }
   })
+
+  if (isLoading || !article) {
+    return <div className="text-center mt-16 text-xl">Loading...</div>;
+  }
+
+  console.log(article)
   const { categories, image, tag, title, description, date, _id } = article
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-slate-50 to-slate-100">
@@ -102,7 +109,7 @@ const ArticlesDetails = () => {
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-8">
-              {tag.map((tag) => (
+              {tag?.map((tag) => (
                 <span
                   key={tag}
                   className="px-3 py-1 bg-amber-100 text-amber-700 text-sm rounded-full font-medium"
@@ -115,7 +122,7 @@ const ArticlesDetails = () => {
             {/* Description */}
             <div className="prose prose-lg max-w-none">
               <div className="text-slate-700 leading-relaxed whitespace-pre-line">
-               {description}
+                {description}
               </div>
             </div>
 

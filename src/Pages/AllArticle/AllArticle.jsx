@@ -44,7 +44,7 @@ const AllArticle = ({ oneArticle }) => {
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-4">
-                    {tag.map((tag) => (
+                    {tag?.map((tag) => (
                         <span
                             key={tag}
                             className="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full font-medium"

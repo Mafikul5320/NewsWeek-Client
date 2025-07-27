@@ -1,6 +1,8 @@
 import React from "react";
+import useAuth from "../Hooks/useAuth";
 
 const MyProfile = () => {
+  const { User } = useAuth()
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-4">
       <div className="max-w-5xl mx-auto">
@@ -13,10 +15,9 @@ const MyProfile = () => {
           {/* Profile Sidebar */}
           <div className="bg-white rounded-2xl shadow-md p-6 text-center h-[65%]">
             <div className="w-24 h-24 mx-auto rounded-full bg-slate-100 flex items-center justify-center relative mb-4">
-              <span className="text-4xl text-slate-400">👤</span>
-              <div className="absolute bottom-1 right-1 bg-yellow-400 rounded-full p-1 text-white text-xs">📷</div>
+              <img className="w-24 h-24 rounded-full" src={User?.photoURL} alt="" />
             </div>
-            <h2 className="text-xl font-semibold text-slate-800">Aavfs</h2>
+            <h2 className="text-xl font-semibold text-slate-800">{User?.displayName}</h2>
             <p className="text-sm text-slate-500 mb-2">duhfc5@gmail.com</p>
             <span className="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full inline-block mb-4">Free Member</span>
 

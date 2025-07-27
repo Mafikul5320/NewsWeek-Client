@@ -1,5 +1,4 @@
 import { Clock, Crown, Eye, Search } from "lucide-react";
-import { Link } from "react-router";
 import useAuth from "../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../Hooks/useAxios";
@@ -8,14 +7,19 @@ import AllArticle from "./AllArticle";
 const AllArticles = () => {
     const { User } = useAuth();
     const UserAxios = useAxios();
-    const { data: article } = useQuery({
-        queryKey: ["article", User?.email],
+    const { data: Allarticle, isLoading } = useQuery({
+        queryKey: ["Allarticle", User?.email],
         queryFn: async () => {
-            const res = await UserAxios.get(`http://localhost:3000/articles?email=${User?.email}`)
+            const res = await UserAxios.get(`/all-articles`)
             return res.data;
         }
     })
-    console.log(article)
+
+    if (isLoading || !Allarticle) {
+        return <div className="text-center mt-16 text-xl">Loading...</div>;
+    }
+
+    console.log(Allarticle)
     return (
         <div className="my-12 w-11/13 mx-auto">
 
@@ -103,7 +107,7 @@ const AllArticles = () => {
             </div>
             <div className="grid grid-cols-4 gap-3">
                 {
-                    article?.map(oneArticle => <AllArticle key={oneArticle._id} oneArticle={oneArticle}></AllArticle>)
+                    Allarticle?.map(oneArticle => <AllArticle key={oneArticle._id} oneArticle={oneArticle}></AllArticle>)
                 }
             </div>
         </div>
