@@ -39,7 +39,7 @@ const AddArticles = () => {
   const onsubmit = async (data) => {
     const tags = selectedTags.map(tag => tag.value);
     const { title, publisher, categories, description } = data;
-    const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate }
+    const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate, status: "Pending" }
     const res = await axiosSucure.post("/article", articleData)
     console.log(res.data.insertedId)
     return res.data;

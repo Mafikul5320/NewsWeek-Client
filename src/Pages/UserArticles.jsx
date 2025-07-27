@@ -8,37 +8,62 @@ import {
   AlertCircle,
   Crown,
 } from "lucide-react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import useAuth from "../Hooks/useAuth";
+import { Link } from "react-router";
+import useAxiosSucure from "../Hooks/useAxiosSucure";
+import Swal from "sweetalert2";
 
 const UserArticles = () => {
-  const articles = [
-    {
-      id: 1,
-      title: "The Future of Renewable Energy in Urban ...",
-      source: "Energy Weekly",
-      status: "Approved",
-      premium: false,
-      views: 1250,
-      published: "Jul 22, 2025",
+  const { User } = useAuth();
+  const axiosSecure = useAxiosSucure()
+  const queryClient = useQueryClient(); // for refetching after mutation
+
+  // Fetching articles
+  const { data: articles, isLoading } = useQuery({
+    queryKey: ["userarticle", User?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/articles?email=${User?.email}`);
+      return res.data;
     },
-    {
-      id: 2,
-      title: "Breaking: New Climate Policy Announced",
-      source: "Global News Network",
-      status: "Pending",
-      premium: false,
-      views: 0,
-      published: "Jul 21, 2025",
+  });
+
+  // Deleting article mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      return await axiosSecure.delete(`/articles/${id}`);
     },
-    {
-      id: 3,
-      title: "Exclusive Interview with Tech Industry Lea...",
-      source: "Tech Today",
-      status: "Declined",
-      premium: true,
-      views: 0,
-      published: "Jul 20, 2025",
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userarticle", User?.email]); // Refetch after delete
     },
-  ];
+  });
+
+  const handleDelete = (id) => {
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      const deleted = deleteMutation.mutate(id);
+      if (result.isConfirmed && !deleted) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+
+  };
+
+  if (isLoading || !articles) {
+    return <div className="text-center mt-16 text-xl">Loading...</div>;
+  }
 
   const getStatusBadge = (status) => {
     switch (status) {
@@ -56,7 +81,7 @@ const UserArticles = () => {
         );
       case "Declined":
         return (
-          <div className="flex  items-start space-y-1">
+          <div className="flex items-start space-y-1">
             <span className="inline-flex items-center gap-1 bg-red-100 text-red-700 text-sm px-3 py-1 rounded-full">
               <AlertCircle size={16} /> Declined
             </span>
@@ -95,8 +120,8 @@ const UserArticles = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
-              {articles.map((article, index) => (
-                <tr key={article.id} className="hover:bg-slate-50">
+              {articles?.map((article, index) => (
+                <tr key={article._id} className="hover:bg-slate-50">
                   <td className="px-6 py-4">{index + 1}</td>
                   <td className="px-6 py-4">
                     <div>
@@ -114,14 +139,18 @@ const UserArticles = () => {
                       "No"
                     )}
                   </td>
-                  <td className="px-6 py-4">
-                    {article.views.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4">{article.published}</td>
+                  <td className="px-6 py-4">{article?.views?.toLocaleString()}</td>
+                  <td className="px-6 py-4">{article.date}</td>
                   <td className="px-6 py-4 flex gap-3 text-slate-600">
-                    <Eye className="cursor-pointer hover:text-blue-600" size={18} />
+                    <Link to={`/Articles-Details/${article._id}`}>
+                      <Eye className="cursor-pointer hover:text-blue-600" size={18} />
+                    </Link>
                     <Pencil className="cursor-pointer hover:text-yellow-600" size={18} />
-                    <Trash2 className="cursor-pointer hover:text-red-600" size={18} />
+                    <Trash2
+                      onClick={() => handleDelete(article._id)}
+                      className="cursor-pointer hover:text-red-600"
+                      size={18}
+                    />
                   </td>
                 </tr>
               ))}
