@@ -1,6 +1,10 @@
+import axios from "axios";
 import React, { useState } from "react";
+import useAxiosSucure from "../Hooks/useAxiosSucure";
+import Swal from "sweetalert2";
 
 const AddPublisher = () => {
+  const axiosSecure = useAxiosSucure()
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -8,6 +12,7 @@ const AddPublisher = () => {
   });
 
   const [logoPreview, setLogoPreview] = useState(null);
+  const [livePreview, setLivePreview] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,8 +22,14 @@ const AddPublisher = () => {
     }));
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file)
+    const uploadImage = await axios.post(`https://api.imgbb.com/1/upload?expiration=600&key=${import.meta.env.VITE_imagebb_key}`, formData)
+
+    setLivePreview(uploadImage.data.data.url);
+    console.log(uploadImage.data.data.url);
     if (file && file.size < 2 * 1024 * 1024) {
       setFormData((prev) => ({
         ...prev,
@@ -30,21 +41,40 @@ const AddPublisher = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.name || !formData.description || !formData.logo) {
-      alert("Please fill all fields");
-      return;
+    const form = e.target;
+    const formData = new FormData(form);
+    const { description, name } = Object.fromEntries(formData.entries())
+    console.log("all", livePreview, description, name)
+    const data = {
+      logo: livePreview,
+      description,
+      name
+    };
+    const res = await axiosSecure.post("/publisher", data);
+    console.log(res.data);
+    if (res.data.insertedId) {
+      Swal.fire({
+        title: "Drag me!",
+        icon: "success",
+        draggable: true
+      });
+      setFormData({ name: "", description: "", logo: null });
+      setLogoPreview(null);
     }
 
+    // if (!formData.name || !formData.description || !formData.logo) {
+    //   alert("Please fill all fields");
+    //   return;
+    // }
+
     // Simulate submission (you can integrate with your backend)
-    console.log("Publisher Added:", formData);
-    alert("Publisher added successfully!");
+    // console.log("Publisher Added:", formData);
+    // alert("Publisher added successfully!");
 
     // Reset form
-    setFormData({ name: "", description: "", logo: null });
-    setLogoPreview(null);
+
   };
 
   return (
