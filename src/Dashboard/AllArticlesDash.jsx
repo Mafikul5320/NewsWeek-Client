@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import useAxiosSucure from "../Hooks/useAxiosSucure";
+import { Crown } from "lucide-react";
 
 
 const StatusBadge = ({ status }) => {
@@ -22,7 +23,7 @@ const AllArticlesDash = () => {
       return res.data;
     }
   })
-  const makeAdminMutation = useMutation({
+  const approveMutation = useMutation({
     mutationFn: async (id) => {
       const res = await axiosSecure.patch("/article-approve", { id })
       console.log(res.data)
@@ -32,8 +33,44 @@ const AllArticlesDash = () => {
       queryClient.invalidateQueries(["dashArticle"])
     }
   })
+  const declineMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch("/article-decline", { id })
+      console.log(res.data)
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["dashArticle"])
+    }
+  })
+  const PremiumMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch("/article-Premium", { id })
+      console.log(res.data)
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["dashArticle"])
+    }
+  })
   const handelApprove = (id) => {
-    makeAdminMutation.mutate(id)
+    approveMutation.mutate(id)
+  }
+  const handeldecline = (id) => {
+    // declineMutation.mutate(id)
+
+
+
+
+
+    document.getElementById('my_modal_4').showModal()
+
+
+
+
+  }
+  const handelPremium = (id) => {
+    PremiumMutation.mutate(id)
   }
   console.log(articles)
   return (
@@ -90,14 +127,30 @@ const AllArticlesDash = () => {
                       <button onClick={() => handelApprove(article?._id)} className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded">
                         Approve
                       </button>
-                      <button className="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded">
+                      <button onClick={() => handeldecline(article?._id)} className="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded">
                         Decline
                       </button>
                     </>
                   )}
-                  <button className="bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1 rounded">
-                    Premium
-                  </button>
+                  {
+                    article?.status === "decline" ? <button className="bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded">
+                      Deleted
+                    </button> : (article?.plan === "Premium" ? <button><Crown /></button> : (<button onClick={() => handelPremium(article?._id)} className="bg-purple-600 hover:bg-purple-700 text-white text-xs px-3 py-1 rounded">
+                      Premium
+                    </button>))
+                  }
+                  {/* modal */}
+                  <dialog id="my_modal_4" className="modal">
+                    <div className="modal-box w-2xl max-w-5xl">
+                      <h3 className="font-bold text-lg">Hello!</h3>
+                      <p className="py-4">Click the button below to close</p>
+                      <div className="modal-action">
+                        <form method="dialog">
+                          <button className="btn">Close</button>
+                        </form>
+                      </div>
+                    </div>
+                  </dialog>
                 </td>
               </tr>
             ))}
