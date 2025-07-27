@@ -19,10 +19,11 @@ const ArticlesUpdate = () => {
         queryKey: ["updatearticle", User?.email],
         queryFn: async () => {
             const res = await axiosSucure.get(`/articles?id=${params?.id}`);
+            console.log(res.data)
             return res.data;
         },
     });
-    console.log(articles)
+    console.log(articles?._id)
 
     const tagOptions = [
         { value: 'Technology', label: 'Technology' },
@@ -51,8 +52,8 @@ const ArticlesUpdate = () => {
     const onsubmit = async (data) => {
         const tags = selectedTags.map(tag => tag.value);
         const { title, publisher, categories, description } = data;
-        const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate, status: "Pending" }
-        const res = await axiosSucure.post("/article", articleData)
+        const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate, status: "Pending", id: articles?._id }
+        const res = await axiosSucure.patch("/article", articleData)
         console.log(res.data.insertedId)
         return res.data;
     };
@@ -81,7 +82,14 @@ const ArticlesUpdate = () => {
                                 placeholder="Enter article title..."
                                 className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
                                 defaultValue={articles?.title}
+                                {...register("title", { required: "Article Title is required" })}
                             />
+                            {errors.title && (
+                                <p className='text-red-500 py-1 flex items-center'>
+                                    <CircleX size={13} />
+                                    <span className='pl-1 font-semibold font-mono'>{errors.title.message} !</span>
+                                </p>
+                            )}
                         </div>
 
                         {/* Image Upload */}
@@ -128,6 +136,12 @@ const ArticlesUpdate = () => {
                                     </div>
                                 )}
                             </div>
+                            {errors.image && (
+                                <p className='text-red-500 py-1 flex items-center'>
+                                    <CircleX size={13} />
+                                    <span className='pl-1 font-semibold font-mono'>{errors.image.message} !</span>
+                                </p>
+                            )}
                         </div>
 
                         {/* Publisher */}
@@ -136,6 +150,7 @@ const ArticlesUpdate = () => {
                                 Categories *
                             </label>
                             <select
+                                {...register("categories", { required: "Publisher is required" })}
                                 className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
                             >
                                 <option defaultValue={articles?.categories}>{articles?.categories}</option>
@@ -146,12 +161,19 @@ const ArticlesUpdate = () => {
                                 <option value="Sports">Sports</option>
                                 <option value="World">World</option>
                             </select>
+                            {errors.publisher && (
+                                <p className="text-red-500 py-1 flex items-center">
+                                    <CircleX size={13} />
+                                    <span className="pl-1 font-semibold font-mono">{errors.publisher.message} !</span>
+                                </p>
+                            )}
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-slate-700 mb-2">
                                 Publisher *
                             </label>
                             <select
+                                {...register("publisher", { required: "Publisher is required" })}
                                 className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
                             >
                                 <option value={articles?.publisher}>{articles?.publisher}</option>
@@ -176,7 +198,7 @@ const ArticlesUpdate = () => {
                             </label>
                             <Select
                                 options={tagOptions}
-                                
+
                                 isMulti={articles?.tag}
                                 {...register("tags")}
                                 onChange={setSelectedTags}
@@ -196,6 +218,7 @@ const ArticlesUpdate = () => {
                                 Article Content *
                             </label>
                             <textarea
+                                {...register("description", { required: "Description is required" })}
                                 rows={10}
                                 defaultValue={articles?.description}
                                 placeholder="Write your article here..."
