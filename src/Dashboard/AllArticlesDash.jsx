@@ -1,52 +1,7 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import useAxiosSucure from "../Hooks/useAxiosSucure";
 
-const articles = [
-  {
-    id: 1,
-    title: "Breaking News Article 1",
-    time: "Posted 2 hours ago",
-    author: "Author 1",
-    email: "author1@example.com",
-    publisher: "TechNews Daily",
-    status: "Pending",
-  },
-  {
-    id: 2,
-    title: "Breaking News Article 2",
-    time: "Posted 2 hours ago",
-    author: "Author 2",
-    email: "author2@example.com",
-    publisher: "TechNews Daily",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    title: "Breaking News Article 3",
-    time: "Posted 2 hours ago",
-    author: "Author 3",
-    email: "author3@example.com",
-    publisher: "TechNews Daily",
-    status: "Approved",
-  },
-  {
-    id: 4,
-    title: "Breaking News Article 4",
-    time: "Posted 2 hours ago",
-    author: "Author 4",
-    email: "author4@example.com",
-    publisher: "TechNews Daily",
-    status: "Approved",
-  },
-  {
-    id: 5,
-    title: "Breaking News Article 5",
-    time: "Posted 2 hours ago",
-    author: "Author 5",
-    email: "author5@example.com",
-    publisher: "TechNews Daily",
-    status: "Approved",
-  },
-];
 
 const StatusBadge = ({ status }) => {
   const base = "px-3 py-1 rounded-full text-xs font-semibold";
@@ -58,13 +13,36 @@ const StatusBadge = ({ status }) => {
 };
 
 const AllArticlesDash = () => {
+  const axiosSecure = useAxiosSucure();
+  const queryClient = useQueryClient();
+  const { data: articles } = useQuery({
+    queryKey: ["dashArticle"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/all-articles")
+      return res.data;
+    }
+  })
+  const makeAdminMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await axiosSecure.patch("/article-approve", { id })
+      console.log(res.data)
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["dashArticle"])
+    }
+  })
+  const handelApprove = (id) => {
+    makeAdminMutation.mutate(id)
+  }
+  console.log(articles)
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">All Articles</h1>
         <div className="space-x-2">
           <span className="bg-white px-4 py-1 rounded shadow text-sm">Pending: 45</span>
-          <span className="bg-white px-4 py-1 rounded shadow text-sm">Total: 890</span>
+          <span className="bg-white px-4 py-1 rounded shadow text-sm">Total: {articles?.length}</span>
         </div>
       </div>
 
@@ -80,11 +58,11 @@ const AllArticlesDash = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 text-sm">
-            {articles.map((article, idx) => (
+            {articles?.map((article, idx) => (
               <tr key={article.id} className="hover:bg-gray-50 transition">
                 <td className="px-6 py-4 flex items-center space-x-3">
-                  <div className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-semibold rounded px-2 py-1">
-                    IMG
+                  <div className=" text-white text-xs font-semibold rounded">
+                    <img className="w-15 h-15 border-gray-200 border-2 rounded-full object-cover" src={article?.image} alt="" />
                   </div>
                   <div>
                     <p className="font-medium">{article.title}</p>
@@ -93,8 +71,8 @@ const AllArticlesDash = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-green-200 flex items-center justify-center font-bold text-green-800">
-                      A{idx + 1}
+                    <div className=" flex items-center justify-center font-bold text-green-800">
+                      <img className="w-10 h-10 rounded-full object-cover" src={article?.author_img} alt="" />
                     </div>
                     <div>
                       <p>{article.author}</p>
@@ -109,7 +87,7 @@ const AllArticlesDash = () => {
                 <td className="px-6 py-4 space-x-2">
                   {article.status === "Pending" && (
                     <>
-                      <button className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded">
+                      <button onClick={() => handelApprove(article?._id)} className="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded">
                         Approve
                       </button>
                       <button className="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded">

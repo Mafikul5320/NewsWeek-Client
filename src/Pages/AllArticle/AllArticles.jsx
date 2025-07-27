@@ -10,7 +10,7 @@ const AllArticles = () => {
     const { data: Allarticle, isLoading } = useQuery({
         queryKey: ["Allarticle", User?.email],
         queryFn: async () => {
-            const res = await UserAxios.get(`/all-articles`)
+            const res = await UserAxios.get(`/articles`)
             return res.data;
         }
     })
