@@ -5,21 +5,26 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 
 const AuthProvider = ({ children }) => {
     const [User, setUser] = useState(null)
+    const [loading, setloading] = useState(true)
     const Register = (email, password) => {
         return createUserWithEmailAndPassword(auth, email, password)
     };
     const Login = (email, password) => {
+        setloading(true)
         return signInWithEmailAndPassword(auth, email, password)
     };
     const GoogleSignIn = (provider) => {
+        setloading(true)
         return signInWithPopup(auth, provider)
     };
     const SignOut = () => {
+        setloading(true)
         // setLoading(true)
         return signOut(auth)
     };
-    const UpdateUser =(info)=>{
-       return updateProfile(auth.currentUser,info)
+    const UpdateUser = (info) => {
+        setloading(true)
+        return updateProfile(auth.currentUser, info)
     }
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -30,6 +35,7 @@ const AuthProvider = ({ children }) => {
             else {
                 console.log("log out user")
             }
+            setloading(false)
         })
         return () => {
             unsubscribe()
@@ -43,7 +49,8 @@ const AuthProvider = ({ children }) => {
         User,
         setUser,
         SignOut,
-        UpdateUser
+        UpdateUser,
+        loading
     }
     return <AuthContext value={userInfo}>
         {children}

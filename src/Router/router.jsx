@@ -17,6 +17,9 @@ import Register from "../Auth/Register";
 import AllArticles from "../Pages/AllArticle/AllArticles";
 import PaymentPage from "../Pages/PaymentSystem/PaymentPage";
 import ArticlesUpdate from "../Pages/ArticlesUpdate";
+import PrivateRouter from "../Context/PrivateRoute";
+import ForbiddenPage from "../Pages/ForbiddenPage ";
+import AdminRouter from "../Context/AdminRouter";
 
 export const router = createBrowserRouter([
     {
@@ -29,7 +32,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/add-articles",
-                Component: AddArticles
+                element: <PrivateRouter><AddArticles></AddArticles></PrivateRouter>
             },
             {
                 path: "/all-articles",
@@ -37,23 +40,25 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/Articles-Details/:id",
-                Component: ArticlesDetails
+                element: <PrivateRouter><ArticlesDetails></ArticlesDetails></PrivateRouter>
             },
             {
                 path: "/subscription",
-                Component: PlansSection
+                element: <PrivateRouter><PlansSection></PlansSection></PrivateRouter>
             },
             {
                 path: "/payment/:id",
-                Component: PaymentPage
+                element: <PrivateRouter><PaymentPage></PaymentPage></PrivateRouter>
             },
             {
                 path: "/premium-articles",
-                Component: PremiumArticles
+                element: <PrivateRouter><PremiumArticles></PremiumArticles></PrivateRouter>
+
             },
             {
                 path: "/my-profile",
-                Component: MyProfile
+
+                element: <PrivateRouter><MyProfile></MyProfile></PrivateRouter>
             },
             {
                 path: "/user-articles",
@@ -68,22 +73,26 @@ export const router = createBrowserRouter([
                 Component: Register
             },
             {
+                path: "/forbidden",
+                Component: ForbiddenPage
+            },
+            {
                 path: "/article-update/:id",
-                Component: ArticlesUpdate
+                element: <PrivateRouter><ArticlesUpdate></ArticlesUpdate></PrivateRouter>
             }
         ]
     },
     {
         path: "/dashboard",
-        Component: Dashboard,
+        element: <PrivateRouter><Dashboard></Dashboard></PrivateRouter>,
         children: [
             {
                 path: "/dashboard",
-                Component: DashboardLayout
+                element: <AdminRouter><DashboardLayout></DashboardLayout></AdminRouter>
             },
             {
                 path: "all-user",
-                Component: AllUsers
+                element: <AdminRouter><AllUsers></AllUsers></AdminRouter>
             },
             {
                 path: "all-articles",

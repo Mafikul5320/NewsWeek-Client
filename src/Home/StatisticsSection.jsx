@@ -1,7 +1,22 @@
 import React from 'react';
 import { Users, Newspaper, BarChart3, TrendingUp, Crown, UserCheck } from 'lucide-react';
+import useAxiosSucure from '../Hooks/useAxiosSucure';
+import { useQuery } from '@tanstack/react-query';
+import CountUp from 'react-countup';
 
 const StatisticsSection = () => {
+  const axiosSecure = useAxiosSucure()
+  const { data: growthData, isLoading } = useQuery({
+    queryKey: ["growthData"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/chart/overview")
+      return res.data
+    }
+  });
+  if (isLoading || !growthData) {
+    return <div className="text-center mt-16 text-xl">Loading...</div>;
+  }
+  const { totalUsers, premiumUsers, totalArticles } = growthData
   return (
     <section className="py-16 bg-[#FFF7EC]/25 border border-amber-200 rounded-lg">
       <div className="container mx-auto px-4">
@@ -24,8 +39,8 @@ const StatisticsSection = () => {
                 <Users className="h-8 w-8 text-gray-600" />
               </div>
             </div>
-            <h3 className="font-semibold text-lg text-foreground mb-2">Registered Users</h3>
-            <div className="font-headline text-3xl font-bold mb-2 text-blue-500">12,000+</div>
+            <h3 className="font-semibold text-lg text-foreground mb-2">Total Users</h3>
+            <div className="font-headline text-3xl font-bold mb-2 text-blue-500"><CountUp duration={5} end={totalUsers} /> +</div>
             <p className="text-sm text-muted-foreground">People who have joined and use our platform</p>
           </div>
 
@@ -36,8 +51,8 @@ const StatisticsSection = () => {
                 <UserCheck className="h-8 w-8 text-green-500" />
               </div>
             </div>
-            <h3 className="font-semibold text-lg text-foreground mb-2">Normal Members</h3>
-            <div className="font-headline text-3xl font-bold mb-2 text-green-500">35,000+</div>
+            <h3 className="font-semibold text-lg text-foreground mb-2">Premium Users</h3>
+            <div className="font-headline text-3xl font-bold mb-2 text-green-500"><CountUp duration={5} end={premiumUsers} /> +</div>
             <p className="text-sm text-muted-foreground">News stories and premium content published</p>
           </div>
 
@@ -48,8 +63,8 @@ const StatisticsSection = () => {
                 <Crown className="h-8 w-8 text-purple-500" />
               </div>
             </div>
-            <h3 className="font-semibold text-lg text-foreground mb-2">Premium Members</h3>
-            <div className="font-headline text-3xl font-bold mb-2 text-purple-500">480K+</div>
+            <h3 className="font-semibold text-lg text-foreground mb-2">Total Articles</h3>
+            <div className="font-headline text-3xl font-bold mb-2 text-purple-500"> <CountUp duration={5} end={totalArticles} /> +</div>
             <p className="text-sm text-muted-foreground">Monthly active views across all platforms</p>
           </div>
         </div>

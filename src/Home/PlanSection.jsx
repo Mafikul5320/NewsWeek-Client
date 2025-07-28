@@ -1,5 +1,6 @@
 import React from 'react';
 import { Search, Crown } from 'lucide-react';
+import { Link } from 'react-router';
 
 const PlanSection = () => {
     return (
@@ -19,10 +20,10 @@ const PlanSection = () => {
                         Advanced Search
                     </button>
 
-                    <button className="border border-amber-400 text-amber-500 hover:bg-orange-500 hover:text-white px-6 py-3 rounded-md font-medium cursor-pointer flex items-center hover:scale-105 transition-transform duration-300 hover:shadow-2xl gap-2">
+                    <Link to={"/subscription"}><button className="border border-amber-400 text-amber-500 hover:bg-orange-500 hover:text-white px-6 py-3 rounded-md font-medium cursor-pointer flex items-center hover:scale-105 transition-transform duration-300 hover:shadow-2xl gap-2">
                         <Crown size={18} />
                         Get Premium Access 
-                    </button>
+                    </button></Link>
                 </div>
 
                 <hr className="border-amber-400 mb-6" />

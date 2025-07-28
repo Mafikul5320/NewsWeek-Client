@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import Select from 'react-select';
 import useAuth from '../Hooks/useAuth';
 import useAxiosSucure from '../Hooks/useAxiosSucure';
+import { useQuery } from '@tanstack/react-query';
 
 const AddArticles = () => {
   const { User } = useAuth();
@@ -20,6 +21,15 @@ const AddArticles = () => {
     { value: 'Programming', label: 'Programming' },
     { value: 'Startups', label: 'Startups' },
   ];
+
+  const { data: publishersNameData, } = useQuery({
+    queryKey: ["publishersNameData"],
+    queryFn: async () => {
+      const res = await axiosSucure.get("/publishers")
+      return res.data
+    }
+  });
+  console.log(publishersNameData)
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -164,12 +174,14 @@ const AddArticles = () => {
                 className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
               >
                 <option value="">Select Publisher</option>
-                <option value="Prothom Alo">Prothom Alo</option>
-                <option value="The Daily Star">The Daily Star</option>
-                <option value="BBC Bangla">BBC Bangla</option>
-                <option value="TechCrunch">TechCrunch</option>
-                {/* You can add more publishers or fetch them dynamically if needed */}
+
+                {publishersNameData?.map(publisher => (
+                  <option key={publisher._id} value={publisher.name}>
+                    {publisher.name}
+                  </option>
+                ))}
               </select>
+
               {errors.publisher && (
                 <p className="text-red-500 py-1 flex items-center">
                   <CircleX size={13} />
@@ -177,6 +189,7 @@ const AddArticles = () => {
                 </p>
               )}
             </div>
+
 
             {/* Tags (React-Select) */}
             <div>
