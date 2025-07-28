@@ -43,6 +43,7 @@ const CheckoutForm = ({ data }) => {
         }
         const res = await axiosSucure.post("/create-payment-intent", {
             amount: centsAmount,
+            email: User?.email,
         })
         const clientSecret = (res.data.clientSecret);
         const result = await stripe.confirmCardPayment(clientSecret, {

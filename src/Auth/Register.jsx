@@ -37,11 +37,12 @@ const Register = () => {
           photoURL: preview,
           email,
           role: "user",
+          user_status: "free",
           login_at: new Date().toISOString()
 
         })
         console.log(res)
-        if (res.data.insertedId ) {
+        if (res.data.insertedId) {
           Swal.fire({
             title: "Drag me!",
             icon: "success",
@@ -72,7 +73,7 @@ const Register = () => {
       }
       const userData = await axiosSecure.post('/user', userInfo)
       console.log(userData.data)
-      if (userData.data.insertedId|| !userData.data.inserted) {
+      if (userData.data.insertedId || !userData.data.inserted) {
         Swal.fire({
           title: "Drag me!",
           icon: "success",

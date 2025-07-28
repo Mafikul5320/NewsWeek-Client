@@ -3,9 +3,11 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSucure from "../Hooks/useAxiosSucure";
 import PremiumArticlePage from "./PremiumArticlePage";
 import { Search } from "lucide-react";
+import useAuth from "../Hooks/useAuth";
 
 const PremiumArticles = () => {
-    const axiosSecure = useAxiosSucure()
+    const axiosSecure = useAxiosSucure();
+    const { User } = useAuth()
     const { data: premiumArticle } = useQuery({
         queryKey: ["premium"],
         queryFn: async () => {
@@ -13,9 +15,16 @@ const PremiumArticles = () => {
             return res.data;
         }
     })
-    console.log(premiumArticle)
+    const { data: premiumUser } = useQuery({
+        queryKey: ["prouser"],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/premium-user?email=${User?.email}`)
+            return res.data;
+        }
+    })
+    console.log(premiumUser?.user_status)
     return (
-        <div className="my-12 w-11/13 mx-auto">
+        <div className={`my-12 w-11/13 mx-auto`}>
             <div className="bg-white border border-slate-200 mb-3 rounded-2xl p-5 shadow-md space-y-4">
                 {/* Search Bar */}
                 <div className="flex items-center gap-4">

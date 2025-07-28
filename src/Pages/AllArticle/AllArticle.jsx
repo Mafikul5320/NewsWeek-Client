@@ -7,7 +7,7 @@ const AllArticle = ({ oneArticle }) => {
     const { categories, image,  tag, title, description, date, _id } = oneArticle;
     const shortDescription = description?.length > 170 ? description.slice(0, 170) + "..." : description
     return (
-        <div className=" rounded-2xl overflow-hidden shadow-lg bg-white border border-slate-200">
+        <div className=" rounded-2xl overflow-hidden shadow-lg h-full bg-white border border-slate-200">
             {/* Image with overlay */}
             <div className="relative">
                 <img

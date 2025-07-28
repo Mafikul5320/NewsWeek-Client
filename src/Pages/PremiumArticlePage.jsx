@@ -4,12 +4,12 @@ import { Link } from "react-router";
 
 const PremiumArticlePage = ({ oneArticel }) => {
 
-    const { categories, date, description, image, plan, publisher, tag, title, status } = oneArticel;
+    const { categories, date, description, image, plan, tag, title, status, _id } = oneArticel;
     const shortDescription = description?.length > 170 ? description.slice(0, 170) + "..." : description;
     console.log(status);
     return (
-        <div className={`my-12 ${status === "decline" && 'hidden'}`}>
-            <div className=" rounded-2xl overflow-hidden shadow-lg bg-white border border-slate-200">
+        <div className={`my-12 ${status === "decline" && 'hidden'} `}>
+            <div className=" h-full rounded-2xl overflow-hidden shadow-lg bg-white border border-slate-200">
                 {/* Image with overlay */}
                 <div className="relative">
                     <img
@@ -69,7 +69,7 @@ const PremiumArticlePage = ({ oneArticel }) => {
                                 <p className="text-xs text-slate-500">Journalist</p>
                             </div>
                         </div>
-                        <Link to={"/Articles-Details"}>
+                        <Link to={`/Articles-Details/${_id}`}>
                             <button className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">
                                 Read More
                             </button>

@@ -18,7 +18,7 @@ const ArticlesDetails = () => {
   const params = useParams();
   console.log(params?.id)
   const { data: article, isLoading } = useQuery({
-    queryKey: ["article", User?.email],
+    queryKey: ["articleDetails", User?.email],
     queryFn: async () => {
       const res = await UserAxios.get(`/articles?id=${params?.id}`)
       console.log(res)
