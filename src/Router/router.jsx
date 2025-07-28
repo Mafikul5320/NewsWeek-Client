@@ -20,6 +20,7 @@ import ArticlesUpdate from "../Pages/ArticlesUpdate";
 import PrivateRouter from "../Context/PrivateRoute";
 import ForbiddenPage from "../Pages/ForbiddenPage ";
 import AdminRouter from "../Context/AdminRouter";
+import PremiumRouter from "../Context/PremiumRouter";
 
 export const router = createBrowserRouter([
     {
@@ -52,7 +53,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/premium-articles",
-                element: <PrivateRouter><PremiumArticles></PremiumArticles></PrivateRouter>
+                element: <PremiumRouter><PrivateRouter><PremiumArticles></PremiumArticles></PrivateRouter></PremiumRouter>
 
             },
             {
@@ -62,7 +63,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/user-articles",
-                Component: UserArticles
+                element: <PrivateRouter><UserArticles></UserArticles></PrivateRouter>
             },
             {
                 path: "/login",
@@ -84,15 +85,15 @@ export const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <PrivateRouter><Dashboard></Dashboard></PrivateRouter>,
+        element: <AdminRouter><PrivateRouter><Dashboard></Dashboard></PrivateRouter></AdminRouter>,
         children: [
             {
                 path: "/dashboard",
-                element: <AdminRouter><DashboardLayout></DashboardLayout></AdminRouter>
+                Component: DashboardLayout
             },
             {
                 path: "all-user",
-                element: <AdminRouter><AllUsers></AllUsers></AdminRouter>
+                Component: AllUsers,
             },
             {
                 path: "all-articles",

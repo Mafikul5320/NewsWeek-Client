@@ -1,9 +1,13 @@
 import { FaUser, FaBars, FaSearch } from "react-icons/fa";
 import { Link, NavLink } from 'react-router';
 import useAuth from "../Hooks/useAuth";
+import useAdminFind from "../Hooks/useAdminFind";
+import usePremiumFind from "../Hooks/usePremiumFind";
 
 const Navber = () => {
     const { User, setUser, SignOut } = useAuth();
+    const { user } = useAdminFind();
+    const { PremiumUser } = usePremiumFind();
     const handelLogout = () => {
         SignOut().then(() => {
             setUser(null)
@@ -54,9 +58,13 @@ const Navber = () => {
                     <NavLink to={'/all-articles'}> All Articles</NavLink>
                     <NavLink to={'/subscription'}> Subscription</NavLink>
                     <NavLink to={"/user-articles"}> My Articles</NavLink>
-                    <NavLink to={"/premium-articles"}>Premium Articles</NavLink>
+                    {
+                        PremiumUser?.user_status === "premium" && <NavLink to={"/premium-articles"}>Premium Articles</NavLink>
+                    }
                     <NavLink>About</NavLink>
-                    <NavLink to={"/dashboard"}>Dashboard</NavLink>
+                    {
+                        user?.role === "admin" && <NavLink to={"/dashboard"}>Dashboard</NavLink>
+                    }
                     <NavLink to={"/my-profile"}>My Profile</NavLink>
                 </nav>
             </div>
