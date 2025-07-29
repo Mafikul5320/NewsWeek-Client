@@ -11,11 +11,21 @@ import useAuth from "../Hooks/useAuth";
 import useAxios from "../Hooks/useAxios";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
+import { useEffect } from "react";
 
 const ArticlesDetails = () => {
+
   const { User } = useAuth();
   const UserAxios = useAxios();
   const params = useParams();
+  // Increment view count on mount
+  useEffect(() => {
+    if (params?.id) {
+      UserAxios.patch(`/articles/view-count/${params?.id}`).catch((err) =>
+        console.error("View count update failed", err)
+      );
+    }
+  }, [params?.id, UserAxios]);
   console.log(params?.id)
   const { data: article, isLoading } = useQuery({
     queryKey: ["articleDetails", User?.email],
@@ -31,7 +41,9 @@ const ArticlesDetails = () => {
   }
 
   console.log(article)
-  const { categories, image, tag, title, description, date, _id } = article
+  const { categories, image, tag, title, description, date, _id, view } = article;
+
+
   return (
     <div className="min-h-screen pt-16 bg-gradient-to-br from-slate-50 to-slate-100">
       <div className=" w-9/13 mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -61,7 +73,7 @@ const ArticlesDetails = () => {
                 </span>
                 <div className="flex items-center space-x-1">
                   <Eye className="h-4 w-4" />
-                  <span>15,420 views</span>
+                  <span>{view} views</span>
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock className="h-4 w-4" />

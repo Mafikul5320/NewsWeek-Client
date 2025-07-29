@@ -1,6 +1,22 @@
-import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Autoplay, Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css'
+import 'swiper/css/pagination';
+import useAxiosSucure from '../Hooks/useAxiosSucure';
+import { Link } from 'react-router';
 
 const HeroSection = () => {
+
+    const axiosSucure = useAxiosSucure();
+    const { data: trendingArticles = [], } = useQuery({
+        queryKey: ['trendingArticles'],
+        queryFn: async () => {
+            const res = await axiosSucure.get('/articles/trending');
+            return res.data;
+        }
+    });
+    console.log(trendingArticles)
     return (
         <section className=" mx-auto px-4 py-10 grid grid-cols-1 lg:grid-cols-8 gap-6">
             {/* Left - Breaking News */}
@@ -48,15 +64,29 @@ const HeroSection = () => {
 
 
             <div className="flex flex-col items-center col-span-4">
-                <img
-                    src="https://images.unsplash.com/photo-1607746882042-944635dfe10e"
-                    alt="featured"
-                    className="w-full h-[400px] object-cover rounded"
-                />
-                <span className="text-yellow-500 font-semibold mt-4">Marketing</span>
-                <h2 className="text-2xl text-center font-extrabold mt-2">
-                    Customer Engagement Marketing: <br /> New Strategy for the Economy
-                </h2>
+
+                <Swiper
+                    modules={[Autoplay, Pagination]}
+                    autoplay={{ delay: 3000 }}
+                    loop={true}
+                    pagination={{ clickable: true }}
+                    className="w-full h-[200px] sm:h-[300px] md:h-[650px]  "
+                >
+                    {trendingArticles?.map((baner, index) => (
+
+                        <SwiperSlide key={index}>
+                            <div className='relative'>
+                                <Link to={`/Articles-Details/${baner?._id}`}>                                <img
+                                    src={baner?.image}
+                                    alt={`Slide ${index + 1}`}
+                                    className="w-full h-full object-cover mt-6"
+                                /></Link>
+                                <span className='absolute px-2 rounded-md top-1 right-1 bg-black text-white'>{baner?.view} view</span>
+                            </div>
+                        </SwiperSlide>
+                    ))}
+
+                </Swiper>
             </div>
             <div className='col-span-2'>
                 <h2 className="text-xl font-bold border-b-4 border-black inline-block mb-4">

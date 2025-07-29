@@ -19,7 +19,7 @@ const AllArticles = () => {
         return <div className="text-center mt-16 text-xl">Loading...</div>;
     }
 
-    console.log(Allarticle)
+    // console.log(Allarticle)
     return (
         <div className="my-12 w-11/13 mx-auto">
 

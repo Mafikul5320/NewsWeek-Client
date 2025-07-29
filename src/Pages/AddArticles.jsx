@@ -17,9 +17,10 @@ const AddArticles = () => {
   const tagOptions = [
     { value: 'Technology', label: 'Technology' },
     { value: 'AI', label: 'AI' },
-    { value: 'React', label: 'React' },
+    { value: 'Environment', label: 'Environment' },
     { value: 'Programming', label: 'Programming' },
-    { value: 'Startups', label: 'Startups' },
+    { value: 'Bangladesh', label: 'Bangladesh' },
+    { value: 'Exclusive', label: 'Exclusive' },
   ];
 
   const { data: publishersNameData, } = useQuery({
@@ -49,7 +50,7 @@ const AddArticles = () => {
   const onsubmit = async (data) => {
     const tags = selectedTags.map(tag => tag.value);
     const { title, publisher, categories, description } = data;
-    const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate, status: "Pending", plan: "free", author_img: User?.photoURL }
+    const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate, view: 0, status: "Pending", plan: "free", author_img: User?.photoURL }
     const res = await axiosSucure.post("/article", articleData)
     console.log(res.data.insertedId)
     return res.data;

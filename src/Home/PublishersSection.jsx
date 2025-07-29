@@ -1,6 +1,17 @@
 import { TrendingUp, Search, Star, CheckCircle } from "lucide-react";
+import useAxiosSucure from "../Hooks/useAxiosSucure";
+import { useQuery } from "@tanstack/react-query";
 
 const PublishersSection = () => {
+  const axiosSucure = useAxiosSucure();
+  const { data: Publishers = [],} = useQuery({
+    queryKey: ['Publisherssection'],
+    queryFn: async () => {
+      const res = await axiosSucure.get('/publishers');
+      return res.data;
+    }
+  });
+  console.log(Publishers)
   return (
     <section className="py-16 bg-gray-100">
       <div className="container mx-auto px-4">
@@ -43,28 +54,28 @@ const PublishersSection = () => {
         {/* Publishers Grid - 3 static cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Publisher Card */}
-          <div className="bg-white rounded-xl border border-gray-300 p-4 shadow hover:shadow-lg transition">
+          {Publishers?.map(onePublisher => <div className="bg-white rounded-xl border border-gray-300 p-4 shadow hover:shadow-lg transition">
             <div className="flex items-center gap-3 mb-3">
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=100&q=80"
+                  src={onePublisher?.logo}
                   alt="TechCrunch"
                   className="w-12 h-12 rounded-lg object-cover"
                 />
                 <CheckCircle className="absolute -bottom-1 -right-1 w-4 h-4 text-blue-500 bg-white rounded-full" />
               </div>
               <div>
-                <h3 className="font-semibold text-lg">TechCrunch</h3>
+                <h3 className="font-semibold text-lg">{onePublisher?.name}</h3>
                 <div className="flex gap-2 mt-1 text-xs">
                   <span className="bg-gray-200 text-gray-700 px-2 py-0.5 rounded">Technology</span>
-                  <span className="flex items-center bg-orange-500 text-white px-2 py-0.5 rounded">
+                  {/* <span className="flex items-center bg-orange-500 text-white px-2 py-0.5 rounded">
                     <TrendingUp className="w-3 h-3 mr-1" /> Hot
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </div>
             <p className="text-sm text-gray-500 mb-4">
-              Leading technology news and startup insights covering startups, innovation, and the latest tech trends.
+              {onePublisher?.description}
             </p>
             <div className="grid grid-cols-2 text-center mb-4">
               <div>
@@ -85,7 +96,7 @@ const PublishersSection = () => {
                 Follow
               </button>
             </div>
-          </div>
+          </div>)}
 
           {/* More publisher cards can be duplicated similarly */}
         </div>

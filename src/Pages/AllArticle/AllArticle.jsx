@@ -1,11 +1,28 @@
 import React from 'react';
 import { Clock, Eye } from "lucide-react";
 import { Link } from 'react-router';
+import useAxiosSucure from '../../Hooks/useAxiosSucure';
+import { useQuery } from '@tanstack/react-query';
 
 const AllArticle = ({ oneArticle }) => {
     console.log(oneArticle)
-    const { categories, image,  tag, title, description, date, _id } = oneArticle;
-    const shortDescription = description?.length > 170 ? description.slice(0, 170) + "..." : description
+    const axiosSucure = useAxiosSucure()
+    const { categories, image, tag, title, description, date, _id, publisher, view } = oneArticle;
+    console.log(publisher)
+    const shortDescription = description?.length > 170 ? description.slice(0, 170) + "..." : description;
+
+    const { data: PublisherDetails } = useQuery({
+        queryKey: ["PublisherDetails", publisher],
+        enabled: !!publisher, // only run if publisher is not empty
+        queryFn: async () => {
+            const res = await axiosSucure.get(`/publisher-details?name=${publisher}`);
+            return res.data;
+        },
+    });
+    const chack = PublisherDetails?.name == publisher;
+    console.log("sjsjkdbfs", PublisherDetails)
+    console.log("chsck", chack)
+
     return (
         <div className=" rounded-2xl overflow-hidden shadow-lg h-full bg-white border border-slate-200">
             {/* Image with overlay */}
@@ -17,7 +34,7 @@ const AllArticle = ({ oneArticle }) => {
                 />
                 <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-sm px-2 py-1 rounded flex items-center gap-1">
                     <Eye size={16} />
-                    15,420
+                    {view}
                 </div>
             </div>
 
@@ -55,24 +72,26 @@ const AllArticle = ({ oneArticle }) => {
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <img
-                            src="https://randomuser.me/api/portraits/women/44.jpg"
-                            alt="Author"
-                            className="w-10 h-10 rounded-full"
-                        />
-                        <div>
-                            <p className="text-sm font-medium text-slate-800">Sarah Johnson</p>
-                            <p className="text-xs text-slate-500">Journalist</p>
+                {
+                    PublisherDetails?.name == publisher && <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={PublisherDetails?.logo}
+                                alt="Author"
+                                className="w-10 h-10 rounded-full"
+                            />
+                            <div>
+                                <p className="text-sm font-medium text-slate-800">{PublisherDetails?.name}</p>
+                                <p className="text-xs text-slate-500">Journalist</p>
+                            </div>
                         </div>
+                        <Link to={`/Articles-Details/${_id}`}>
+                            <button className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">
+                                Read More
+                            </button>
+                        </Link>
                     </div>
-                    <Link to={`/Articles-Details/${_id}`}>
-                        <button className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">
-                            Read More
-                        </button>
-                    </Link>
-                </div>
+                }
             </div>
         </div>
     );
