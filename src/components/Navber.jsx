@@ -37,7 +37,13 @@ const Navber = () => {
 
                     {/* Right Section */}
                     <div className="flex items-center gap-6">
-                        {User ? <button onClick={handelLogout} className="btn btn-active">Logout</button> : <div>
+                        {User ? <>
+                        <button onClick={handelLogout} className="btn btn-active">Logout</button>
+                        <div>
+                            <img className="h-15 w-15 object-cover border-amber-300 border-2 rounded-full" src={User?.photoURL} alt="" />
+                        </div>
+                        
+                        </> : <div>
                             <Link to={"/login"}>
                                 <button className="flex items-center gap-1">
                                     <FaUser />

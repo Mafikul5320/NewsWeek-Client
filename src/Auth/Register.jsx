@@ -9,10 +9,12 @@ import { GoogleAuthProvider } from 'firebase/auth';
 import useAxiosSucure from '../Hooks/useAxiosSucure';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 const Register = () => {
   const { Register, GoogleSignIn, UpdateUser } = useAuth();
   const axiosSecure = useAxiosSucure();
+  const navigate = useNavigate()
   const [RegLoading, setregLoading] = useState(true)
   const provider = new GoogleAuthProvider();
   const [preview, setPreview] = useState(null);
@@ -43,8 +45,9 @@ const Register = () => {
         })
         console.log(res)
         if (res.data.insertedId) {
+          navigate("/")
           Swal.fire({
-            title: "Drag me!",
+            title: "Register Sucessfull!",
             icon: "success",
             draggable: true
           });
@@ -52,10 +55,22 @@ const Register = () => {
         setregLoading(true)
 
       }).catch(error => {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to Register",
+          showConfirmButton: false,
+          timer: 1500
+        });
         console.log(error)
         setregLoading(true)
       })
     }).catch(error => {
+      Swal.fire({
+        icon: "error",
+        title: "Failed to Register",
+        showConfirmButton: false,
+        timer: 1500
+      });
       console.log(error)
       setregLoading(true)
     })
@@ -74,13 +89,20 @@ const Register = () => {
       const userData = await axiosSecure.post('/user', userInfo)
       console.log(userData.data)
       if (userData.data.insertedId || !userData.data.inserted) {
+        navigate('/')
         Swal.fire({
-          title: "Drag me!",
+          title: "Register sucessfull",
           icon: "success",
           draggable: true
         });
       }
     }).catch(error => {
+      Swal.fire({
+        icon: "error",
+        title: "Failed to Register",
+        showConfirmButton: false,
+        timer: 1500
+      });
       console.log(error)
     })
   }

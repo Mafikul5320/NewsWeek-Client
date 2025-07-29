@@ -37,8 +37,6 @@ const Dashboard = () => {
           <li ><NavLink to={"/dashboard/all-articles"} className={"flex items-center"}><Users size={20} /><span className='pt-1.5'>All Articles</span></NavLink></li>
           <li ><NavLink to={"/dashboard/add-publisher"} className={"flex items-center"}><Users size={20} /><span className='pt-1.5'>Add Publisher</span></NavLink></li>
           <li ><NavLink to={"/dashboard"} className={"flex items-center"}><LayoutDashboard size={20} /><span className='pt-1.5'>OverView</span></NavLink></li>
-          <li><a>Articles</a></li>
-          <li><a>Analytics</a></li>
         </ul>
       </div>
     </div>

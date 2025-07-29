@@ -21,6 +21,7 @@ import PrivateRouter from "../Context/PrivateRoute";
 import ForbiddenPage from "../Pages/ForbiddenPage ";
 import AdminRouter from "../Context/AdminRouter";
 import PremiumRouter from "../Context/PremiumRouter";
+import NotFound from "../Pages/NotFound";
 
 export const router = createBrowserRouter([
     {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
             {
                 path: "/forbidden",
                 Component: ForbiddenPage
+            },
+            {
+                path: "*",
+                Component: NotFound
             },
             {
                 path: "/article-update/:id",

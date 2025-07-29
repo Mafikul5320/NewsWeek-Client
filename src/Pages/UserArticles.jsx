@@ -27,6 +27,7 @@ const UserArticles = () => {
       return res.data;
     },
   });
+  console.log(articles)
 
   // Deleting article mutation
   const deleteMutation = useMutation({
@@ -129,9 +130,9 @@ const UserArticles = () => {
                       <p className="text-xs text-slate-500">{article.source}</p>
                     </div>
                   </td>
-                  <td className="px-6 py-4">{getStatusBadge(article.status)}</td>
+                  <td className="px-6 py-4">{(article?.status)}</td>
                   <td className="px-6 py-4">
-                    {article.premium ? (
+                    {article?.plan ==="Premium" ? (
                       <span className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full text-xs">
                         <Crown size={14} /> Yes
                       </span>
@@ -139,7 +140,7 @@ const UserArticles = () => {
                       "No"
                     )}
                   </td>
-                  <td className="px-6 py-4">{article?.views?.toLocaleString()}</td>
+                  <td className="px-6 py-4">{article?.view?.toLocaleString()}</td>
                   <td className="px-6 py-4">{article.date}</td>
                   <td className="px-6 py-4 flex gap-3 text-slate-600">
                     <Link to={`/Articles-Details/${article?._id}`}>

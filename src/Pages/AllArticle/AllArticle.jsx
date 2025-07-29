@@ -1,14 +1,17 @@
 import React from 'react';
-import { Clock, Eye } from "lucide-react";
+import { Clock, Crown, Eye } from "lucide-react";
 import { Link } from 'react-router';
 import useAxiosSucure from '../../Hooks/useAxiosSucure';
 import { useQuery } from '@tanstack/react-query';
+import usePremiumFind from '../../Hooks/usePremiumFind';
 
 const AllArticle = ({ oneArticle }) => {
-    console.log(oneArticle)
-    const axiosSucure = useAxiosSucure()
-    const { categories, image, tag, title, description, date, _id, publisher, view } = oneArticle;
-    console.log(publisher)
+    // console.log(oneArticle)
+    const axiosSucure = useAxiosSucure();
+    const { PremiumUser } = usePremiumFind();
+    console.log(PremiumUser)
+    const { categories, image, tag, title, description, date, _id, publisher, view, plan } = oneArticle;
+    // console.log(publisher)
     const shortDescription = description?.length > 170 ? description.slice(0, 170) + "..." : description;
 
     const { data: PublisherDetails } = useQuery({
@@ -19,9 +22,9 @@ const AllArticle = ({ oneArticle }) => {
             return res.data;
         },
     });
-    const chack = PublisherDetails?.name == publisher;
-    console.log("sjsjkdbfs", PublisherDetails)
-    console.log("chsck", chack)
+    // const chack = PublisherDetails?.name == publisher;
+    // console.log("sjsjkdbfs", PublisherDetails)
+    // console.log("chsck", chack)
 
     return (
         <div className=" rounded-2xl overflow-hidden shadow-lg h-full bg-white border border-slate-200">
@@ -32,6 +35,7 @@ const AllArticle = ({ oneArticle }) => {
                     alt={title}
                     className="w-full h-48 object-cover"
                 />
+                {plan === "Premium" && <div className="flex items-center space-x-1 bg-gradient-to-br from-amber-500 to-orange-600 text-white font-medium absolute px-2 py-1 rounded-2xl top-2 right-2"><Crown size={14} /> <span className="text-xs"><span>premium</span></span></div>}
                 <div className="absolute bottom-2 right-2 bg-black bg-opacity-60 text-white text-sm px-2 py-1 rounded flex items-center gap-1">
                     <Eye size={16} />
                     {view}
@@ -86,7 +90,7 @@ const AllArticle = ({ oneArticle }) => {
                             </div>
                         </div>
                         <Link to={`/Articles-Details/${_id}`}>
-                            <button className="bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm">
+                            <button disabled={PremiumUser?.user_status !== "premium" && plan == "Premium"} className={` ${PremiumUser?.user_status !== "premium" && plan === "Premium" ? 'bg-gray-400 text-white px-4 py-2 rounded cursor-not-allowed opacity-60' : 'bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold px-4 py-2 rounded-lg shadow-sm'}`}>
                                 Read More
                             </button>
                         </Link>

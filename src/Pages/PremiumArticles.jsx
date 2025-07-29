@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSucure from "../Hooks/useAxiosSucure";
 import PremiumArticlePage from "./PremiumArticlePage";
@@ -7,112 +7,108 @@ import useAuth from "../Hooks/useAuth";
 
 const PremiumArticles = () => {
     const axiosSecure = useAxiosSucure();
-    const { User } = useAuth()
-    const { data: premiumArticle } = useQuery({
-        queryKey: ["premium"],
+    const { User } = useAuth();
+
+    const [searchTitle, setSearchTitle] = useState("");
+    const [selectedPublisher, setSelectedPublisher] = useState("All");
+    const [searchClicked, setSearchClicked] = useState(false);
+
+    // Get publishers for dropdown
+    const { data: publishers = [] } = useQuery({
+        queryKey: ["publishers"],
         queryFn: async () => {
-            const res = await axiosSecure.get("/premium-articles")
+            const res = await axiosSecure.get("/publishers");
             return res.data;
         }
-    })
-    const { data: premiumUser } = useQuery({
-        queryKey: ["prouser"],
+    });
+
+    // Load all premium articles initially
+    const { data: allPremiumArticles = [], isLoading } = useQuery({
+        queryKey: ["premium-articles"],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/premium-user?email=${User?.email}`)
+            const res = await axiosSecure.get("/premium-articles");
             return res.data;
         }
-    })
-    console.log(premiumUser?.user_status)
+    });
+
+    // Filtered/Search articles
+    const {
+        data: filteredArticles = [],
+        refetch: refetchFiltered,
+        isFetching: isFilterLoading,
+    } = useQuery({
+        queryKey: ["filteredPremium", searchTitle, selectedPublisher],
+        queryFn: async () => {
+            const params = new URLSearchParams();
+            if (searchTitle) params.append("title", searchTitle);
+            if (selectedPublisher && selectedPublisher !== "All") {
+                params.append("publisher", selectedPublisher);
+            }
+            const res = await axiosSecure.get(`/articles/search?${params.toString()}`);
+            return res.data;
+        },
+        enabled: false, // Only run on form submit
+    });
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setSearchClicked(true);
+        refetchFiltered();
+    };
+
+    const displayedArticles = searchClicked ? filteredArticles : allPremiumArticles;
+
     return (
-        <div className={`my-12 w-11/13 mx-auto`}>
+        <div className="my-12 w-11/12 mx-auto">
+            {/* Search + Filter Bar */}
             <div className="bg-white border border-slate-200 mb-3 rounded-2xl p-5 shadow-md space-y-4">
-                {/* Search Bar */}
-                <div className="flex items-center gap-4">
-                    <div className="relative flex-1">
+                <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-center gap-4">
+                    <div className="relative w-full md:flex-1">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                         <input
                             type="text"
-                            placeholder="Search articles by title..."
+                            placeholder="Search premium articles by title..."
+                            value={searchTitle}
+                            onChange={(e) => setSearchTitle(e.target.value)}
                             className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-400"
                         />
                     </div>
-                    <button className="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2.5 rounded-lg font-semibold shadow">
+
+                    <select
+                        value={selectedPublisher}
+                        onChange={(e) => setSelectedPublisher(e.target.value)}
+                        className="w-full md:w-60 px-4 py-3 border border-slate-300 rounded-lg focus:outline-none"
+                    >
+                        <option value="All">All Publishers</option>
+                        {publishers.map(pub => (
+                            <option key={pub.name} value={pub.name}>{pub.name}</option>
+                        ))}
+                    </select>
+
+                    <button
+                        type="submit"
+                        className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold shadow"
+                    >
                         Search
                     </button>
-                </div>
+                </form>
 
-                {/* Filter Row */}
-                <div className="flex justify-between items-center">
-                    <button className="flex items-center text-slate-600 font-medium gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 13.414V20a1 1 0 01-1.447.894l-4-2A1 1 0 019 18v-4.586L3.293 6.707A1 1 0 013 6V4z" />
-                        </svg>
-                        Filters
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-
-                    <div className="flex items-center gap-4 text-sm text-slate-600">
-                        <div className="flex gap-2">
-                            <svg className="h-5 w-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M3 3h7v7H3V3zM14 3h7v7h-7V3zM14 14h7v7h-7v-7zM3 14h7v7H3v-7z" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            <svg className="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M4 6h16M4 12h16M4 18h16" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </div>
-                        <span className="text-slate-500">6 articles found</span>
-                    </div>
-                </div>
-
-                {/* Filter Content */}
-                <div className="space-y-4 border-t border-t-gray-200 pt-4">
-                    {/* Publisher */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Publisher</label>
-                        <select className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none">
-                            <option>All Publishers</option>
-                            <option>Global News Network</option>
-                            <option>Science Today</option>
-                        </select>
-                    </div>
-
-                    {/* Tags
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">Tags</label>
-                        <div className="flex flex-wrap gap-2">
-                            {[
-                                "Climate", "Politics", "Environment", "Technology", "Healthcare", "AI", "Finance",
-                                "Economy", "Markets", "Space", "Science", "Energy", "Art", "Culture"
-                            ].map((tag) => (
-                                <span
-                                    key={tag}
-                                    className="px-3 py-1 rounded-full text-sm bg-slate-100 text-slate-600"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    </div> */}
-
-                    {/* Buttons */}
-                    {/* <div className="flex items-center gap-4 mt-2">
-                        <button className="bg-amber-500 hover:bg-amber-600 text-white px-4 py-2 rounded-lg font-medium">
-                            Apply Filters
-                        </button>
-                        <button className="text-slate-500 hover:underline text-sm">
-                            Clear All
-                        </button>
-                    </div> */}
+                {/* Result Count */}
+                <div>
+                    {(isFilterLoading || isLoading) ? (
+                        <p className="text-center text-slate-500">Loading...</p>
+                    ) : (
+                        // <p className="text-sm text-slate-500">{displayedArticles?.length} articles found</p>
+                        <p className="text-sm text-slate-500">articles found</p>
+                    )}
                 </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
-                {
-                    premiumArticle?.map(oneArticel => <PremiumArticlePage key={oneArticel._id} oneArticel={oneArticel}>
 
-                    </PremiumArticlePage>)
-                }
+            {/* Article Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                {displayedArticles?.map(oneArticel => (
+                    <PremiumArticlePage key={oneArticel._id} oneArticel={oneArticel} />
+                ))}
             </div>
         </div>
     );

@@ -6,6 +6,7 @@ import Select from 'react-select';
 import useAuth from '../Hooks/useAuth';
 import useAxiosSucure from '../Hooks/useAxiosSucure';
 import { useQuery } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
 
 const AddArticles = () => {
   const { User } = useAuth();
@@ -52,7 +53,14 @@ const AddArticles = () => {
     const { title, publisher, categories, description } = data;
     const articleData = { title, categories, publisher, description, image: imagePreview, tag: tags, email: User?.email, displayName: User?.displayName, date: formattedDate, view: 0, status: "Pending", plan: "free", author_img: User?.photoURL }
     const res = await axiosSucure.post("/article", articleData)
-    console.log(res.data.insertedId)
+    if (res.data.insertedId) {
+      Swal.fire({
+        icon: "success",
+        title: "Article Add sucessfull",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
     return res.data;
   };
 

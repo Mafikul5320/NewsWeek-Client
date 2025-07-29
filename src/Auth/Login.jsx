@@ -8,10 +8,12 @@ import useAuth from '../Hooks/useAuth';
 import { GoogleAuthProvider } from 'firebase/auth';
 import useAxiosSucure from '../Hooks/useAxiosSucure';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router';
 
 const Login = () => {
   const { Login, GoogleSignIn } = useAuth();
-  const axiosSecure =useAxiosSucure();
+  const axiosSecure = useAxiosSucure();
+  const navigate = useNavigate()
   const [logLoading, setLogLoading] = useState(true)
   const provider = new GoogleAuthProvider();
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -20,9 +22,16 @@ const Login = () => {
     const { email, password } = data;
     Login(email, password).then(res => {
       console.log(res);
+      navigate('/')
       setLogLoading(true)
     }).catch(error => {
       console.log(error)
+      Swal.fire({
+        icon: "error",
+        title: "Failed to Login",
+        showConfirmButton: false,
+        timer: 1500
+      });
       setLogLoading(true)
     })
     console.log(data);
@@ -40,14 +49,21 @@ const Login = () => {
       }
       const userData = await axiosSecure.post('/user', userInfo)
       console.log(userData.data)
-      if (userData.data.insertedId|| !userData.data.inserted) {
+      if (userData.data.insertedId || !userData.data.inserted) {
+        navigate('/')
         Swal.fire({
-          title: "Drag me!",
+          title: "Login sucessfull!",
           icon: "success",
           draggable: true
         });
       }
     }).catch(error => {
+      Swal.fire({
+        icon: "error",
+        title: "Failed to Login",
+        showConfirmButton: false,
+        timer: 1500
+      });
       console.log(error)
     })
   }
