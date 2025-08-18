@@ -34,6 +34,7 @@ const AuthProvider = ({ children }) => {
             }
             else {
                 console.log("log out user")
+                setUser(null)
             }
             setloading(false)
         })

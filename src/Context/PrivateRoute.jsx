@@ -8,7 +8,7 @@ const PrivateRouter = ({ children }) => {
         return <Loading></Loading>
     }
 
-    if (!User && !User?.email) {
+    if (!User ) {
         return <Navigate to={'/login'} />
     }
 

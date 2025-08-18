@@ -12,7 +12,7 @@ const PremiumRouter = ({ children }) => {
     if (loading || isLoading) {
         return <Loading></Loading>
     }
-    if (!User && !User?.email || PremiumUser?.user_status !== "premium") {
+    if (!User || PremiumUser?.user_status !== "premium") {
         return <Navigate to={'/forbidden'} />
     }
 

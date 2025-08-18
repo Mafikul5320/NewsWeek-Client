@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users } from 'lucide-react';
+import { Home, LayoutDashboard, Users } from 'lucide-react';
 import React from 'react';
 import { NavLink, Outlet } from 'react-router';
 
@@ -33,6 +33,7 @@ const Dashboard = () => {
         <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
         <ul className="menu p-4 w-80 min-h-full bg-white  text-base-content">
           {/* Sidebar content */}
+          <li ><NavLink to={"/"} className={"flex items-center"}><Home size={20} /><span className='pt-1.5'>Home</span></NavLink></li>
           <li ><NavLink to={"/dashboard/all-user"} className={"flex items-center"}><Users size={20} /><span className='pt-1.5'>All Users</span></NavLink></li>
           <li ><NavLink to={"/dashboard/all-articles"} className={"flex items-center"}><Users size={20} /><span className='pt-1.5'>All Articles</span></NavLink></li>
           <li ><NavLink to={"/dashboard/add-publisher"} className={"flex items-center"}><Users size={20} /><span className='pt-1.5'>Add Publisher</span></NavLink></li>

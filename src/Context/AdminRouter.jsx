@@ -8,11 +8,11 @@ const AdminRouter = ({ children }) => {
 
     const { User, loading } = useAuth();
     const { isLoading, user } = useAdminFind();
-    console.log(user,"admin chack")
+
     if (loading || isLoading) {
         return <Loading></Loading>
     }
-    if (!User && !User?.email || user?.role !== "admin") {
+    if (!User  || user?.role !== "admin") {
         return <Navigate to={'/forbidden'} />
     }
 

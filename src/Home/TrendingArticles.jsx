@@ -17,7 +17,7 @@ const TrendingArticles = () => {
     <div className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4 text-red-600">Breaking</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {articles.map((article) => (
+        {articles.slice(0, 4).map((article) => (
           <Link to={`/Articles-Details/${article?._id}`}>
             <div key={article?.id} className="relative group overflow-hidden rounded-lg">
               <span className='absolute bg-amber-300 px-1 top-1 right-1 rounded-lg'>{article?.view}</span>
