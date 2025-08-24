@@ -1,12 +1,48 @@
-# React + Vite
+📰 NewsWeek – Full-Stack Newspaper Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern full-stack digital newspaper platform built with React, Node.js, Express, MongoDB, and Firebase.
+The project offers role-based access, premium content, article management, and subscription features to create a professional online news experience.
 
-Currently, two official plugins are available:
+🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🔐 Secure Authentication – Email/Password & Social login with Firebase
 
-## Expanding the ESLint configuration
+👥 Role-Based Access – Readers & Admins with different permissions
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+📝 Article Management – Submit, approve, decline, delete & mark articles as premium
+
+🌍 News Categories – Technology, Politics, Business, Health, Sports, World, Entertainment, Education, Lifestyle, Science
+
+💳 Subscription System – Access exclusive articles for paid subscribers
+
+⭐ Publishers Section – Verified publishers with ratings & follow option
+
+📱 Responsive UI – Seamless experience across devices
+
+📊 Admin Dashboard – Insights, charts, and complete control over content & users
+
+🛠️ Tech Stack
+
+Frontend:
+
+React.js + Tailwind CSS + DaisyUI
+
+React Router DOM
+
+React Hook Form
+
+Axios
+
+Backend:
+
+Node.js + Express.js
+
+MongoDB + Mongoose
+
+JWT Authentication
+
+Authentication & Hosting:
+
+Firebase Authentication
+
+Vercel (Frontend) & Render (Backend)
