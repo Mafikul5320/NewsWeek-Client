@@ -14,8 +14,8 @@ const HomeLayout = () => {
                 <HeroSection></HeroSection>
                 <OfferModal></OfferModal>
                 {/* <PlansSection></PlansSection> */}
-            </div>
-                           <TrendingArticles></TrendingArticles>
+            </div >
+            <TrendingArticles></TrendingArticles>
             <PublishersSection></PublishersSection>
             <StatisticsSection></StatisticsSection>
             <ReviewSection></ReviewSection>

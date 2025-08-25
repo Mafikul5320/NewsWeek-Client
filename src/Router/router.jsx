@@ -23,6 +23,7 @@ import AdminRouter from "../Context/AdminRouter";
 import PremiumRouter from "../Context/PremiumRouter";
 import NotFound from "../Pages/NotFound";
 import CategoriesArticle from "../Pages/CategoriesArticle";
+import AllCategory from "../Pages/AllCategory";
 
 export const router = createBrowserRouter([
     {
@@ -90,6 +91,10 @@ export const router = createBrowserRouter([
             {
                 path: "/categories-article",
                 element: <CategoriesArticle></CategoriesArticle>
+            },
+            {
+                path: "/all-category",
+                Component: AllCategory
             }
         ]
     },

@@ -92,29 +92,58 @@ const HeroSection = () => {
             <div className="flex flex-col items-center lg:col-span-4">
                 <Swiper
                     modules={[Autoplay]}
-                    autoplay={{ delay: 3000 }}
+                    autoplay={{ delay: 4000 }}
                     loop={true}
-                    className="w-full h-[200px] sm:h-[300px] md:h-[500px] lg:h-[600px]"
+                    className="w-full h-[220px] sm:h-[350px] md:h-[570px]  rounded-2xl overflow-hidden shadow-xl"
                 >
                     {trendingArticles?.map((baner, index) => (
                         <SwiperSlide key={index}>
-                            <div className='relative'>
-                                <Link to={`/Articles-Details/${baner?._id}`}>
+                            <Link to={`/Articles-Details/${baner?._id}`}>
+                                <div className="relative w-full h-full">
+                                    {/* Background Image */}
                                     <img
                                         src={baner?.image}
                                         alt={`Slide ${index + 1}`}
-                                        className="w-full md:h-125 object-cover mt-6 hover:scale-105 transition-transform duration-300 rounded-lg"
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                                     />
-                                </Link>
-<span className="absolute top-2 right-2 flex items-center gap-1 px-2 py-0.5 
-                 rounded-full bg-black/50 backdrop-blur-sm text-white text-xs">
-  <Eye size={12} /> {baner?.view}
-</span>
-                            </div>
+
+                                    {/* Gradient Overlay */}
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+
+                                    {/* Content Overlay */}
+                                    <div className="absolute bottom-6 left-6 right-6 text-white space-y-3">
+                                        <span className="bg-amber-500 text-xs px-3 py-1 rounded-full font-semibold">
+                                            {baner?.categories || "News"}
+                                        </span>
+
+
+                                        <h2 className="text-lg sm:text-2xl md:text-3xl font-bold leading-snug hover:text-amber-400 transition-colors">
+                                            {baner?.title}
+                                        </h2>
+
+
+                                        <p className="hidden sm:block text-sm md:text-base text-gray-200 line-clamp-2">
+                                            {baner?.description?.split(" ").slice(0, 20).join(" ")}...
+                                        </p>
+
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-xs md:text-sm text-gray-300">
+                                                {baner?.date}
+                                            </span>
+                                            <span className="flex items-center gap-1 text-xs bg-white/20 px-2 py-1 rounded-full">
+                                                <Eye size={14} /> {baner?.view}
+                                            </span>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </Link>
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
+
 
             {/* Right - Popular */}
             <div className='lg:col-span-2 space-y-6'>
