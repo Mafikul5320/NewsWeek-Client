@@ -22,6 +22,7 @@ import ForbiddenPage from "../Pages/ForbiddenPage ";
 import AdminRouter from "../Context/AdminRouter";
 import PremiumRouter from "../Context/PremiumRouter";
 import NotFound from "../Pages/NotFound";
+import CategoriesArticle from "../Pages/CategoriesArticle";
 
 export const router = createBrowserRouter([
     {
@@ -85,6 +86,10 @@ export const router = createBrowserRouter([
             {
                 path: "/article-update/:id",
                 element: <PrivateRouter><ArticlesUpdate></ArticlesUpdate></PrivateRouter>
+            },
+            {
+                path: "/categories-article",
+                element: <CategoriesArticle></CategoriesArticle>
             }
         ]
     },

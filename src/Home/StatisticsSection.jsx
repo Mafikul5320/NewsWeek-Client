@@ -1,80 +1,111 @@
-import React from 'react';
-import { Users, Newspaper, BarChart3, TrendingUp, Crown, UserCheck } from 'lucide-react';
-import useAxiosSucure from '../Hooks/useAxiosSucure';
-import { useQuery } from '@tanstack/react-query';
-import CountUp from 'react-countup';
+import React from "react";
+import { Users, UserCheck, Crown, TrendingUp } from "lucide-react";
+import useAxiosSucure from "../Hooks/useAxiosSucure";
+import { useQuery } from "@tanstack/react-query";
+import CountUp from "react-countup";
+import { motion } from "framer-motion";
 
 const StatisticsSection = () => {
-  const axiosSecure = useAxiosSucure()
+  const axiosSecure = useAxiosSucure();
   const { data: growthData, isLoading } = useQuery({
     queryKey: ["growthData"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/chart/overview")
-      return res.data
-    }
+      const res = await axiosSecure.get("/chart/overview");
+      return res.data;
+    },
   });
+
   if (isLoading || !growthData) {
     return <div className="text-center mt-16 text-xl">Loading...</div>;
   }
-  const { totalUsers, premiumUsers, totalArticles } = growthData
+
+  const { totalUsers, premiumUsers, totalArticles } = growthData;
+
+  const stats = [
+    {
+      title: "Total Readers",
+      value: totalUsers,
+      icon: <Users className="h-8 w-8" />,
+      color: "from-amber-500 to-red-600",
+      desc: "Daily readers across the globe",
+    },
+    {
+      title: "Premium Subscribers",
+      value: premiumUsers,
+      icon: <UserCheck className="h-8 w-8" />,
+      color: "from-green-500 to-emerald-700",
+      desc: "Exclusive members with full access",
+    },
+    {
+      title: "Published Articles",
+      value: totalArticles,
+      icon: <Crown className="h-8 w-8" />,
+      color: "from-indigo-500 to-purple-700",
+      desc: "News & stories shaping the world",
+    },
+  ];
+
   return (
-    <section className="py-16 bg-[#FFF7EC]/25 border border-amber-200 rounded-lg">
-      <div className="container mx-auto px-4">
-        {/* Title */}
-        <div className="text-center mb-12">
-          <h2 className="font-headline text-4xl font-bold text-foreground mb-4">
-            Platform Statistics
+    <section className="relative py-24 px-6 lg:px-12 overflow-hidden bg-[#fdfcf9]">
+      {/* Paper style background */}
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_#fff6e5,_#ffffff)]" />
+
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        {/* Left Editorial Section */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6 }}
+          className="space-y-6"
+        >
+          <h2 className="text-5xl font-extrabold font-serif text-gray-900 leading-tight">
+            By the Numbers: <br /> <span className="text-red-600">Our Reach</span>
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Join thousands of users who trust our platform for the latest news and insights
+          <p className="text-lg text-gray-600 max-w-lg leading-relaxed">
+            Trusted by thousands of readers, our newsroom continues to grow
+            with impactful journalism, premium storytelling, and millions of
+            engaged views every month.
           </p>
-        </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 bg-amber-50/30">
-          {/* Card 1 */}
-          <div className="bg-card shadow-lg  border border-amber-300 rounded-lg p-6 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-            <div className="mb-4 flex justify-center">
-              <div className="p-4 rounded-full bg-muted/50">
-                <Users className="h-8 w-8 text-gray-600" />
+          <div className="inline-flex items-center bg-black text-white px-6 py-3 rounded-full shadow-md text-sm font-semibold mt-8 tracking-wide uppercase">
+            <TrendingUp className="h-4 w-4 mr-2" />
+            Growing 25% Every Month
+          </div>
+        </motion.div>
+
+        {/* Right: Breaking Numbers */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {stats.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: i * 0.2 }}
+              className="relative rounded-xl p-[2px] bg-gradient-to-r from-gray-200 via-white to-gray-200 shadow-xl"
+            >
+              <div className="bg-white rounded-xl p-8 h-full flex flex-col justify-between hover:shadow-2xl transition-all duration-300">
+                <div className="flex items-center justify-between">
+                  <div
+                    className={`p-3 rounded-lg bg-gradient-to-r ${item.color} text-white shadow-md`}
+                  >
+                    {item.icon}
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {item.title}
+                  </h3>
+                  <div
+                    className={`mt-2 text-4xl font-extrabold font-serif bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}
+                  >
+                    <CountUp duration={4} end={item.value} /> +
+                  </div>
+                  <p className="text-sm text-gray-500 mt-1">{item.desc}</p>
+                </div>
               </div>
-            </div>
-            <h3 className="font-semibold text-lg text-foreground mb-2">Total Users</h3>
-            <div className="font-headline text-3xl font-bold mb-2 text-blue-500"><CountUp duration={5} end={totalUsers} /> +</div>
-            <p className="text-sm text-muted-foreground">People who have joined and use our platform</p>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-card shadow-lg  border border-amber-300 rounded-lg p-6 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-            <div className="mb-4 flex justify-center">
-              <div className="p-4 rounded-full bg-muted/50">
-                <UserCheck className="h-8 w-8 text-green-500" />
-              </div>
-            </div>
-            <h3 className="font-semibold text-lg text-foreground mb-2">Premium Users</h3>
-            <div className="font-headline text-3xl font-bold mb-2 text-green-500"><CountUp duration={5} end={premiumUsers} /> +</div>
-            <p className="text-sm text-muted-foreground">News stories and premium content published</p>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-card shadow-lg  border border-amber-300 rounded-lg p-6 text-center hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-            <div className="mb-4 flex justify-center">
-              <div className="p-4 rounded-full bg-muted/50">
-                <Crown className="h-8 w-8 text-purple-500" />
-              </div>
-            </div>
-            <h3 className="font-semibold text-lg text-foreground mb-2">Total Articles</h3>
-            <div className="font-headline text-3xl font-bold mb-2 text-purple-500"> <CountUp duration={5} end={totalArticles} /> +</div>
-            <p className="text-sm text-muted-foreground">Monthly active views across all platforms</p>
-          </div>
-        </div>
-
-        {/* Extra Info */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center justify-center space-x-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-medium">
-            <TrendingUp className="h-4 w-4" />
-            <span>Growing by 25% monthly</span>
-          </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

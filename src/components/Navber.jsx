@@ -28,14 +28,13 @@ const Navber = () => {
 
   return (
     <header className="w-full sticky top-0 left-0 z-50 pb-[160px]  transition-all duration-500">
-      
+
       {/* ===== Big Navbar ===== */}
       <div
-        className={`absolute left-0 w-full transition-all  bg-white backdrop-blur-sm shadow duration-500 ${
-          isSticky
-            ? "opacity-0 -translate-y-5 pointer-events-none"
-            : "opacity-100 translate-y-0"
-        }`}
+        className={`absolute left-0 w-full transition-all  bg-white backdrop-blur-sm shadow duration-500 ${isSticky
+          ? "opacity-0 -translate-y-5 pointer-events-none"
+          : "opacity-100 translate-y-0"
+          }`}
       >
         <div className="py-6">
           <div className="flex justify-between items-center w-11/12 mx-auto pb-2 ">
@@ -54,7 +53,7 @@ const Navber = () => {
             </div>
 
             {/* Center Logo */}
-            <div className="font-serif italic text-amber-500 text-center text-5xl sm:text-6xl md:text-7xl">
+            <div className="!italic text-amber-500 pl-24 text-center text-5xl sm:text-6xl md:text-7xl font-extrabold">
               NewsWeek<span className="text-xs align-top ml-1">PRO</span>
             </div>
 
@@ -90,9 +89,8 @@ const Navber = () => {
 
           {/* Navigation */}
           <nav
-            className={`flex flex-col md:flex-row justify-center gap-4 md:gap-6 pt-3 text-sm font-semibold transition-all duration-300 ${
-              menuOpen ? "block" : "hidden"
-            } md:flex border-t border-gray-200`}
+            className={`flex flex-col md:flex-row justify-center gap-4 md:gap-6 pt-3 text-sm font-semibold transition-all duration-300 pr-24 ${menuOpen ? "block" : "hidden"
+              } md:flex border-t border-gray-200`}
           >
             <NavLink to="/">Home</NavLink>
             <NavLink to="/add-articles">Add Articles</NavLink>
@@ -113,37 +111,37 @@ const Navber = () => {
 
       {/* ===== Small Navbar ===== */}
       <div
-        className={`absolute left-0 w-full bg-white shadow-lg transition-all duration-500 ${
-          isSticky
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-5 pointer-events-none"
-        }`}
+        className={`absolute left-0 w-full bg-white shadow-lg transition-all duration-500 ${isSticky
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 -translate-y-5 pointer-events-none"
+          }`}
       >
-        <div className="py-5">
+        <div className="py-5 ">
           <div className="flex justify-between items-center w-11/12 mx-auto">
             {/* Logo Small */}
-            <div className="font-serif italic text-amber-500 text-3xl font-bold">
-              NewsWeek<span className="text-xs align-top ml-1">PRO</span>
-            </div>
-          <nav
-            className={`flex flex-col md:flex-row justify-center gap-4 md:gap-6 pt-3 text-sm font-semibold transition-all duration-300 ${
-              menuOpen ? "block" : "hidden"
-            } md:flex`}
-          >
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/add-articles">Add Articles</NavLink>
-            <NavLink to="/all-articles">All Articles</NavLink>
-            <NavLink to="/subscription">Subscription</NavLink>
-            <NavLink to="/user-articles">My Articles</NavLink>
-            {PremiumUser?.user_status === "premium" && (
-              <NavLink to="/premium-articles">Premium Articles</NavLink>
-            )}
-            <NavLink to="/about">About</NavLink>
-            {user?.role === "admin" && (
-              <NavLink to="/dashboard">Dashboard</NavLink>
-            )}
-            <NavLink to="/my-profile">My Profile</NavLink>
-          </nav>
+            <Link to={"/"}>
+              <div className="font-serif italic text-amber-500 text-3xl font-bold">
+                NewsWeek<span className="text-xs align-top ml-1">PRO</span>
+              </div>
+            </Link>
+            <nav
+              className={`flex  flex-col md:flex-row justify-center gap-4 md:gap-6 pt-3 text-sm font-semibold transition-all duration-300 ${menuOpen ? "block" : "hidden"
+                } md:flex`}
+            >
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/add-articles">Add Articles</NavLink>
+              <NavLink to="/all-articles">All Articles</NavLink>
+              <NavLink to="/subscription">Subscription</NavLink>
+              <NavLink to="/user-articles">My Articles</NavLink>
+              {PremiumUser?.user_status === "premium" && (
+                <NavLink to="/premium-articles">Premium Articles</NavLink>
+              )}
+              <NavLink to="/about">About</NavLink>
+              {user?.role === "admin" && (
+                <NavLink to="/dashboard">Dashboard</NavLink>
+              )}
+              <NavLink to="/my-profile">My Profile</NavLink>
+            </nav>
             {/* Right Section */}
             <div className="flex items-center gap-3 md:gap-6">
               {User ? (

@@ -22,9 +22,7 @@ const AllArticle = ({ oneArticle }) => {
             return res.data;
         },
     });
-    // const chack = PublisherDetails?.name == publisher;
-    // console.log("sjsjkdbfs", PublisherDetails)
-    // console.log("chsck", chack)
+
 
     return (
         <div className=" rounded-2xl overflow-hidden shadow-lg h-full bg-white border border-slate-200">

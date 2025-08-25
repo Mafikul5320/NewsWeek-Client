@@ -15,14 +15,22 @@ const AddArticles = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [selectedTags, setSelectedTags] = useState([]);
 
-  const tagOptions = [
-    { value: 'Technology', label: 'Technology' },
-    { value: 'AI', label: 'AI' },
-    { value: 'Environment', label: 'Environment' },
-    { value: 'Programming', label: 'Programming' },
-    { value: 'Bangladesh', label: 'Bangladesh' },
-    { value: 'Exclusive', label: 'Exclusive' },
-  ];
+const tagOptions = [
+  { value: 'Technology', label: 'Technology' },
+  { value: 'AI', label: 'AI' },
+  { value: 'Programming', label: 'Programming' },
+  { value: 'Science', label: 'Science' },
+  { value: 'Environment', label: 'Environment' },
+  { value: 'Politics', label: 'Politics' },
+  { value: 'World', label: 'World' },
+  { value: 'Business', label: 'Business' },
+  { value: 'Health', label: 'Health' },
+  { value: 'Sports', label: 'Sports' },
+  { value: 'Education', label: 'Education' },
+  { value: 'Bangladesh', label: 'Bangladesh' },
+  { value: 'Exclusive', label: 'Exclusive' },
+  { value: 'Premium', label: 'Premium' },
+];
 
   const { data: publishersNameData, } = useQuery({
     queryKey: ["publishersNameData"],
@@ -31,7 +39,13 @@ const AddArticles = () => {
       return res.data
     }
   });
-  console.log(publishersNameData)
+  const { data: Allcategories, } = useQuery({
+    queryKey: ["Allcategories"],
+    queryFn: async () => {
+      const res = await axiosSucure.get("/categories")
+      return res.data
+    }
+  });
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
@@ -155,22 +169,23 @@ const AddArticles = () => {
                 Categories *
               </label>
               <select
-                {...register("categories", { required: "Publisher is required" })}
+                {...register("categories", { required: "Category is required" })}
                 className="w-full px-4 py-3 border-gray-300 border rounded-lg focus:border-2 focus:border-amber-300 focus:outline-none"
               >
                 <option value="">Select Categories</option>
-                <option value="Technology">Technology</option>
-                <option value="Politics">Politics</option>
-                <option value="Business">Business</option>
-                <option value="Health">Health</option>
-                <option value="Sports">Sports</option>
-                <option value="World">World</option>
-                {/* You can add more publishers or fetch them dynamically if needed */}
+                {Allcategories?.map((cat) => (
+                  <option key={cat?._id} value={cat?.category}>
+                    {cat?.category}
+                  </option>
+                ))}
               </select>
-              {errors.publisher && (
+
+              {errors.categories && (
                 <p className="text-red-500 py-1 flex items-center">
                   <CircleX size={13} />
-                  <span className="pl-1 font-semibold font-mono">{errors.publisher.message} !</span>
+                  <span className="pl-1 font-semibold font-mono">
+                    {errors.categories.message} !
+                  </span>
                 </p>
               )}
             </div>

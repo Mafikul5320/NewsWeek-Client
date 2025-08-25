@@ -12,10 +12,10 @@ const HomeLayout = () => {
         <div>
             <div className='w-11/13 mx-auto'>
                 <HeroSection></HeroSection>
-                <TrendingArticles></TrendingArticles>
                 <OfferModal></OfferModal>
                 {/* <PlansSection></PlansSection> */}
             </div>
+                           <TrendingArticles></TrendingArticles>
             <PublishersSection></PublishersSection>
             <StatisticsSection></StatisticsSection>
             <ReviewSection></ReviewSection>

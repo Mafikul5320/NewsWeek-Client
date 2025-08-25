@@ -93,16 +93,13 @@ const ArticlesDetails = () => {
             <div className="flex items-center justify-between mb-8 pb-6 border-b border-slate-200">
               <div className="flex items-center space-x-4">
                 <img
-                  src="https://randomuser.me/api/portraits/women/44.jpg"
+                  src={article?.author_img}
                   alt="Sarah Johnson"
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div>
-                  <div className="font-semibold text-slate-900">Sarah Johnson</div>
+                  <div className="font-semibold text-slate-900">{article?.displayName}</div>
                   <div className="text-sm text-slate-600">Journalist</div>
-                  <div className="text-xs text-slate-500 mt-1 max-w-md">
-                    Sarah is a seasoned journalist with over a decade of experience in climate and political reporting.
-                  </div>
                 </div>
               </div>
 

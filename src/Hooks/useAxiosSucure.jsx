@@ -4,7 +4,7 @@ import useAuth from './useAuth';
 import { useNavigate } from 'react-router';
 
 const axiosInstance = axios.create({
-  baseURL: "https://assignment-12-server-wheat-pi.vercel.app"
+  baseURL: "http://localhost:3000"
 });
 
 const useAxiosSecure = () => {
