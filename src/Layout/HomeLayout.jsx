@@ -18,9 +18,9 @@ const HomeLayout = () => {
             <TrendingArticles></TrendingArticles>
             <PublishersSection></PublishersSection>
             <StatisticsSection></StatisticsSection>
-            <ReviewSection></ReviewSection>
             <FeaturedCategories></FeaturedCategories>
             <PlanSection></PlanSection>
+            <ReviewSection></ReviewSection>
         </div>
     );
 };

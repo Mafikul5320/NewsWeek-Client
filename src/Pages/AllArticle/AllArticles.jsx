@@ -5,6 +5,8 @@ import useAxios from "../../Hooks/useAxios";
 import AllArticle from "./AllArticle";
 import useAxiosSucure from "../../Hooks/useAxiosSucure";
 import { useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const AllArticles = () => {
     const { User } = useAuth();
@@ -60,7 +62,22 @@ const AllArticles = () => {
 
     // Loading State
     if (isAllLoading) {
-        return <div className="text-center mt-16 text-xl">Loading...</div>;
+        return  <div className="bg-white border border-slate-200 mb-3 rounded-2xl p-5 shadow-md space-y-4 my-12 w-11/12 mx-auto">
+      {/* Search Bar */}
+      <div className="flex items-center gap-4">
+        <Skeleton height={44} className="flex-1" /> 
+        <Skeleton height={44} width={100} borderRadius={8} /> 
+      </div>
+
+      {/* Publisher Filter */}
+      <div>
+        <Skeleton height={16} width={100} className="mb-2" />
+        <Skeleton height={40} width="100%" borderRadius={8} />
+      </div>
+
+      {/* Results Count */}
+      <Skeleton height={16} width={120} />
+    </div>
     }
 
     // Decide what to render

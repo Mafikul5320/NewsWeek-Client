@@ -6,7 +6,7 @@ const PlanSection = () => {
     return (
         <div className='w-11/13 mx-auto mb-9'>
             <div className="bg-gradient-to-br from-orange-50/60 to-amber-50 p-10 rounded-2xl shadow-xl border border-amber-200 mt-10">
-                
+
                 {/* Heading */}
                 <h2 className="text-3xl font-bold text-center mb-4 text-slate-800">
                     Can&apos;t Find What You&apos;re Looking For?
@@ -18,15 +18,17 @@ const PlanSection = () => {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10">
-                    <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg flex items-center hover:scale-105 transition-transform duration-300 gap-2 shadow-md">
-                        <Search size={18} />
-                        Advanced Search
-                    </button>
+                    <Link to={"/all-articles"}>
+                        <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg flex items-center hover:scale-105 transition-transform duration-300 gap-2 shadow-md">
+                            <Search size={18} />
+                            Advanced Search
+                        </button>
+                    </Link>
 
                     <Link to={"/subscription"}>
                         <button className="border border-amber-400 text-amber-600 hover:bg-orange-500 hover:text-white px-6 py-3 rounded-lg font-medium cursor-pointer flex items-center hover:scale-105 transition-transform duration-300 shadow-md gap-2">
                             <Crown size={18} />
-                            Get Premium Access 
+                            Get Premium Access
                         </button>
                     </Link>
                 </div>
