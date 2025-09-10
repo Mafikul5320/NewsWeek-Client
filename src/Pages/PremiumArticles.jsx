@@ -93,15 +93,7 @@ const PremiumArticles = () => {
                     </button>
                 </form>
 
-                {/* Result Count */}
-                <div>
-                    {(isFilterLoading || isLoading) ? (
-                        <p className="text-center text-slate-500">Loading...</p>
-                    ) : (
-                        // <p className="text-sm text-slate-500">{displayedArticles?.length} articles found</p>
-                        <p className="text-sm text-slate-500">articles found</p>
-                    )}
-                </div>
+            
             </div>
 
             {/* Article Cards */}
